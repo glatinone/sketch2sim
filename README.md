@@ -55,7 +55,7 @@ Open **Settings** (top right), paste a free Gemini API key from
 [aistudio.google.com](https://aistudio.google.com/apikey), then draw something and press **Compile**
 (or `Ctrl+Enter`). The key stays in your browser's localStorage and is sent only to Google's Gemini API.
 
-A live compile takes ~45–90 s: Gemma 4 always reasons before it answers.
+A live compile takes ~30 s (longer when the free tier is busy).
 
 Useful URL flags: `?mock` uses a built-in mock result (UI work without a key).
 

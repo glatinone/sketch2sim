@@ -39,7 +39,13 @@ function ResultView({ result, fallbackReason }: { result: CompileResult; fallbac
   const [tab, setTab] = useState<Tab>("circuit");
   const cached = result.source === "cached";
   // Notes the presenter must act on inside Wokwi (e.g. "add Servo in Library Manager").
-  const wokwiNotes = result.notes.filter((n) => /librar|wokwi/i.test(n));
+  const usesServo = /#include\s*<Servo\.h>/.test(result.sketchIno);
+  const wokwiNotes = [
+    ...(usesServo
+      ? ['Servo sketch: the first ▶ in Wokwi fails on "Servo.h" — click the INSTALL "SERVO" LIBRARY button Wokwi offers, then press ▶ again.']
+      : []),
+    ...result.notes.filter((n) => /librar|wokwi/i.test(n) && !(usesServo && /servo/i.test(n))),
+  ];
   const tabs: { id: Tab; label: string; icon: typeof Cpu; count?: number }[] = [
     { id: "circuit", label: "Circuit", icon: CircuitBoard },
     { id: "diagram", label: "diagram.json", icon: FileJson },
@@ -162,17 +168,16 @@ function Idle() {
   );
 }
 
-// Gemma 4 always "thinks" before answering: a live compile takes ~45 s (up to 90 s).
-// The stages keep the screen alive; validation + firmware happen right after the model replies.
+// A live compile takes ~30 s (up to ~2 min on a busy free tier). The stages keep the screen alive;
+// validation + firmware happen right after the model replies.
 const STAGES: [number, string][] = [
   [0, "Sending sketch to Gemma 4…"],
   [2, "Gemma 4 reading sketch…"],
-  [10, "Identifying parts…"],
-  [20, "Choosing Arduino pins…"],
-  [30, "Reasoning about the wiring…"],
-  [40, "Writing firmware…"],
-  [55, "Validating pins…"],
-  [70, "Still thinking — big multimodal model, almost there…"],
+  [7, "Identifying parts…"],
+  [13, "Choosing Arduino pins…"],
+  [19, "Writing firmware…"],
+  [25, "Validating pins…"],
+  [40, "Still thinking — big multimodal model, almost there…"],
 ];
 
 function Compiling({ startedAt, previewUrl }: { startedAt: number; previewUrl: string }) {
@@ -193,7 +198,7 @@ function Compiling({ startedAt, previewUrl }: { startedAt: number; previewUrl: s
         <div className="text-center">
           <div className="text-2xl font-bold text-white">{stage}</div>
           <div className="mt-1 font-mono text-slate-400">
-            {secs.toFixed(1)} s <span className="font-sans text-slate-500">· usually ~45 s</span>
+            {secs.toFixed(1)} s <span className="font-sans text-slate-500">· usually ~30 s</span>
           </div>
         </div>
         <div className="h-2 w-full overflow-hidden rounded-full bg-slate-800">
