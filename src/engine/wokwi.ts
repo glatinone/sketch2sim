@@ -1,34 +1,62 @@
 import type { Part, Wire } from "../contract/types.ts";
 import { UNO_ID, findPart } from "./catalog.ts";
 
-// Uno at the origin, peripherals in a grid to its right. Not pretty, but never overlapping.
-function layout(parts: Part[]): Map<string, { top: number; left: number }> {
+// The Uno's digital header is on its top edge and analog/power on the bottom edge, so parts driven by
+// digital pins go in a row above the board and analog parts in a row below. Within a row, parts are
+// ordered like the header (pin 13 on the left) to keep wires from crossing. Resistors sit next to their LED.
+function layout(parts: Part[], wires: Wire[]): Map<string, { top: number; left: number }> {
   const pos = new Map<string, { top: number; left: number }>();
   pos.set(UNO_ID, { top: 0, left: 0 });
-  const others = parts.filter((p) => p.id !== UNO_ID);
-  const perColumn = 3;
-  let x = 330;
-  let y = -80;
-  let inColumn = 0;
-  let columnWidth = 0;
-  for (const p of others) {
-    const size = findPart(p.type)?.size ?? { w: 80, h: 80 };
-    if (inColumn === perColumn) {
-      x += columnWidth + 60;
-      y = -80;
-      inColumn = 0;
-      columnWidth = 0;
+
+  const neighbours = (id: string) =>
+    wires.flatMap((w) => {
+      if (w.from.startsWith(`${id}:`)) return [w.to];
+      if (w.to.startsWith(`${id}:`)) return [w.from];
+      return [];
+    });
+  const unoPinOf = (id: string, depth = 0): string | undefined => {
+    const ends = neighbours(id);
+    const signal = ends.find((e) => e.startsWith(`${UNO_ID}:`) && /^(A?\d+)$/.test(e.split(":")[1]));
+    if (signal) return signal.split(":")[1];
+    if (depth > 0) return undefined;
+    for (const e of ends) {
+      const [pid] = e.split(":");
+      if (pid !== UNO_ID) {
+        const via = unoPinOf(pid, depth + 1);
+        if (via) return via;
+      }
     }
-    pos.set(p.id, { top: y, left: x });
-    y += size.h + 50;
-    columnWidth = Math.max(columnWidth, size.w);
-    inColumn++;
-  }
+    return undefined;
+  };
+  // header order left -> right: 13..2 on top; A0..A5 on the bottom
+  const rank = (pin: string | undefined) =>
+    pin === undefined ? 99 : pin.startsWith("A") ? Number(pin.slice(1)) : 13 - Number(pin);
+
+  const others = parts.filter((p) => p.id !== UNO_ID);
+  const withPin = others.map((p) => ({ p, pin: unoPinOf(p.id) }));
+  const resistorFirst = (a: Part, b: Part) =>
+    (a.type === "wokwi-resistor" ? 0 : 1) - (b.type === "wokwi-resistor" ? 0 : 1);
+  const sortRow = (row: typeof withPin) =>
+    row.sort((a, b) => rank(a.pin) - rank(b.pin) || resistorFirst(a.p, b.p));
+
+  const top = sortRow(withPin.filter((x) => !x.pin?.startsWith("A")));
+  const bottom = sortRow(withPin.filter((x) => x.pin?.startsWith("A")));
+
+  const placeRow = (row: typeof withPin, isTop: boolean) => {
+    let x = -40;
+    for (const { p } of row) {
+      const size = findPart(p.type)?.size ?? { w: 80, h: 80 };
+      pos.set(p.id, { top: isTop ? -size.h - 70 : 280, left: x });
+      x += size.w + 45;
+    }
+  };
+  placeRow(top, true);
+  placeRow(bottom, false);
   return pos;
 }
 
 export function buildDiagramJson(parts: Part[], wires: Wire[]): string {
-  const pos = layout(parts);
+  const pos = layout(parts, wires);
   const diagram = {
     version: 1,
     author: "Sketch2Sim",
