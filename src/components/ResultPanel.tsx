@@ -91,7 +91,7 @@ function ResultView({ result, fallbackReason }: { result: CompileResult; fallbac
         <CopyButton big text={result.sketchIno} label="Copy sketch.ino" />
         <span className="ml-1 text-sm text-slate-400">
           1. paste into the <b className="text-slate-200">diagram.json</b> tab · 2. paste <b className="text-slate-200">sketch.ino</b> · 3. press{" "}
-          <b className="text-emerald-300">▶</b>
+          <b className="text-emerald-300">▶</b> · tip: press <kbd className="rounded bg-slate-800 px-1 text-slate-200">F</kbd> in Wokwi to fit the view
         </span>
         {wokwiNotes.length > 0 && (
           <ul className="w-full space-y-0.5 border-t border-emerald-500/20 pt-2 text-sm text-amber-200">

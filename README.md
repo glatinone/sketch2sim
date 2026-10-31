@@ -7,6 +7,8 @@ Wokwi `diagram.json` + Arduino `sketch.ino`. **Gemma 4** reads the image; a **de
 repairs whatever the model gets wrong, so the output is a circuit the real
 [Wokwi](https://wokwi.com) simulator accepts. Paste both files, press ▶, press the button, the LED lights.
 
+**Try it:** https://glatinone.github.io/sketch2sim/ (bring your own free Gemini API key; presets work without one and are labeled CACHED).
+
 Built in one afternoon at **MLH Hacktoberfest Hack Day Batam** (31 Oct 2026) for the
 *Best Use of Gemma 4* and *Best Open-Source AI Project* challenges.
 
@@ -44,7 +46,7 @@ HC-SR04 ultrasonic sensor, DHT22.
 ## Run it locally
 
 ```bash
-git clone https://github.com/<you>/sketch2sim && cd sketch2sim
+git clone https://github.com/glatinone/sketch2sim && cd sketch2sim
 npm install
 npm run dev            # http://localhost:5173
 ```
