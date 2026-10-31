@@ -1,1 +1,45 @@
 @import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", "Cascadia Code", Consolas, monospace;
+}
+
+:root {
+  color-scheme: dark;
+}
+
+/* Projector pass: scale everything up on big screens; 1366x768 stays at 16px. */
+html {
+  font-size: 16px;
+}
+@media (min-width: 1700px) and (min-height: 900px) {
+  html {
+    font-size: 19px;
+  }
+}
+
+body {
+  background: #020617;
+}
+
+.s2s-scan {
+  background: linear-gradient(to bottom, transparent, rgb(34 211 238 / 0.35), transparent);
+  animation: s2s-scan 1.8s ease-in-out infinite;
+}
+@keyframes s2s-scan {
+  0% { top: -4rem; }
+  100% { top: 100%; }
+}
+
+.s2s-indeterminate {
+  animation: s2s-indeterminate 1.3s ease-in-out infinite;
+}
+@keyframes s2s-indeterminate {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(300%); }
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: #334155; border-radius: 6px; }
+::-webkit-scrollbar-track { background: transparent; }

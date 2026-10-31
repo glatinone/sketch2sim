@@ -13,12 +13,12 @@ export const STAMPS = ["UNO", "LED", "BUTTON", "BUZZER", "SERVO", "POT", "ULTRAS
 
 export type Theme = "screen" | "paper";
 const THEMES: Record<Theme, { bg: string; ink: string }> = {
-  screen: { bg: "#0b1120", ink: "#f1f5f9" },
+  screen: { bg: "#0f172a", ink: "#f1f5f9" },
   paper: { bg: "#ffffff", ink: "#111827" },
 };
 
 const HAND_FONT = `"Segoe Print", "Comic Sans MS", "Bradley Hand", cursive`;
-const PEN_W = 4;
+const PEN_W = 5;
 const ERASER_W = 36;
 
 // Deterministic jitter so a stamp looks hand-drawn but never "shimmers" on redraw.
@@ -29,8 +29,8 @@ function rng(seed: number) {
 }
 
 function stampSize(ctx: CanvasRenderingContext2D, label: string) {
-  ctx.font = `600 34px ${HAND_FONT}`;
-  return { w: Math.max(110, ctx.measureText(label).width + 44), h: 70 };
+  ctx.font = `600 40px ${HAND_FONT}`;
+  return { w: Math.max(120, ctx.measureText(label).width + 48), h: 80 };
 }
 
 function drawStamp(ctx: CanvasRenderingContext2D, label: string, x: number, y: number, ink: string) {
