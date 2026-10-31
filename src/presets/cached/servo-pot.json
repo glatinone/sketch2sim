@@ -22,7 +22,7 @@
   "wires": [
     {
       "from": "pot1:GND",
-      "to": "uno:GND.1",
+      "to": "uno:GND.2",
       "color": "black",
       "signal": "GND",
       "rationale": "Connect potentiometer ground to Arduino ground."
@@ -43,7 +43,7 @@
     },
     {
       "from": "servo1:GND",
-      "to": "uno:GND.2",
+      "to": "uno:GND.1",
       "color": "black",
       "signal": "GND",
       "rationale": "Connect servo ground to Arduino ground."
@@ -63,7 +63,7 @@
       "rationale": "Servo control signal connected to PWM pin 9."
     }
   ],
-  "diagramJson": "{\n  \"version\": 1,\n  \"author\": \"Sketch2Sim\",\n  \"editor\": \"wokwi\",\n  \"parts\": [\n    {\n      \"type\": \"wokwi-arduino-uno\",\n      \"id\": \"uno\",\n      \"top\": 0,\n      \"left\": 0\n    },\n    {\n      \"type\": \"wokwi-potentiometer\",\n      \"id\": \"pot1\",\n      \"top\": 280,\n      \"left\": -40\n    },\n    {\n      \"type\": \"wokwi-servo\",\n      \"id\": \"servo1\",\n      \"top\": -140,\n      \"left\": -40\n    }\n  ],\n  \"connections\": [\n    [\n      \"pot1:GND\",\n      \"uno:GND.1\",\n      \"black\",\n      []\n    ],\n    [\n      \"pot1:VCC\",\n      \"uno:5V\",\n      \"red\",\n      []\n    ],\n    [\n      \"pot1:SIG\",\n      \"uno:A0\",\n      \"orange\",\n      []\n    ],\n    [\n      \"servo1:GND\",\n      \"uno:GND.2\",\n      \"black\",\n      []\n    ],\n    [\n      \"servo1:V+\",\n      \"uno:5V\",\n      \"red\",\n      []\n    ],\n    [\n      \"servo1:PWM\",\n      \"uno:9\",\n      \"purple\",\n      []\n    ]\n  ],\n  \"dependencies\": {}\n}",
+  "diagramJson": "{\n  \"version\": 1,\n  \"author\": \"Sketch2Sim\",\n  \"editor\": \"wokwi\",\n  \"parts\": [\n    {\n      \"type\": \"wokwi-arduino-uno\",\n      \"id\": \"uno\",\n      \"top\": 0,\n      \"left\": 0\n    },\n    {\n      \"type\": \"wokwi-potentiometer\",\n      \"id\": \"pot1\",\n      \"top\": 280,\n      \"left\": -40\n    },\n    {\n      \"type\": \"wokwi-servo\",\n      \"id\": \"servo1\",\n      \"top\": -140,\n      \"left\": -40\n    }\n  ],\n  \"connections\": [\n    [\n      \"pot1:GND\",\n      \"uno:GND.2\",\n      \"black\",\n      []\n    ],\n    [\n      \"pot1:VCC\",\n      \"uno:5V\",\n      \"red\",\n      []\n    ],\n    [\n      \"pot1:SIG\",\n      \"uno:A0\",\n      \"orange\",\n      []\n    ],\n    [\n      \"servo1:GND\",\n      \"uno:GND.1\",\n      \"black\",\n      []\n    ],\n    [\n      \"servo1:V+\",\n      \"uno:5V\",\n      \"red\",\n      []\n    ],\n    [\n      \"servo1:PWM\",\n      \"uno:9\",\n      \"purple\",\n      []\n    ]\n  ],\n  \"dependencies\": {}\n}",
   "sketchIno": "#include <Servo.h>\n\nconst int POT_PIN = A0;\nconst int SERVO_PIN = 9;\n\nServo myServo;\n\nvoid setup() {\n  myServo.attach(SERVO_PIN);\n}\n\nvoid loop() {\n  // Read the potentiometer value (0 to 1023)\n  int potValue = analogRead(POT_PIN);\n  \n  // Map the value to servo angle (0 to 180 degrees)\n  int angle = map(potValue, 0, 1023, 0, 180);\n  \n  // Move the servo to the calculated angle\n  myServo.write(angle);\n  \n  // Small delay to allow the servo to reach the position\n  delay(15);\n}\n",
   "notes": [
     "In Wokwi: open Library Manager and add \"Servo\".",

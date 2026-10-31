@@ -222,6 +222,21 @@ export function validateCircuit(raw: RawCircuit, rawText: string): ValidCircuit 
     }
   }
 
+  // ---- 7. cosmetic: all Uno GND pins are the same net, so send parts drawn above the board (digital) to the
+  // top-header GND.1 and analog parts to the bottom GND.2. Stops GND wires from crossing the chip in Wokwi.
+  const analogParts = new Set(
+    wires.flatMap((w) => [[w.from, w.to], [w.to, w.from]])
+      .filter(([a, b]) => b.startsWith(`${UNO_ID}:A`) && !a.startsWith(`${UNO_ID}:`))
+      .map(([a]) => a.split(":")[0]),
+  );
+  for (const w of wires) {
+    for (const [key, otherKey] of [["from", "to"], ["to", "from"]] as const) {
+      if (!isGndEnd(w[key])) continue;
+      const partId = w[otherKey].split(":")[0];
+      w[key] = `${UNO_ID}:${analogParts.has(partId) ? "GND.2" : "GND.1"}`;
+    }
+  }
+
   // drop parts with no wires at all (except the Uno)
   const wired = new Set(wires.flatMap((w) => [w.from.split(":")[0], w.to.split(":")[0]]));
   const finalParts = parts.filter((p) => {

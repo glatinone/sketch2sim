@@ -72,7 +72,7 @@
       "rationale": "Signal to drive the buzzer."
     },
     {
-      "from": "uno:GND.2",
+      "from": "uno:GND.1",
       "to": "buzzer:1",
       "color": "black",
       "signal": "GND",
@@ -94,13 +94,13 @@
     },
     {
       "from": "led1:C",
-      "to": "uno:GND.3",
+      "to": "uno:GND.1",
       "color": "black",
       "signal": "GND",
       "rationale": "LED cathode to ground."
     }
   ],
-  "diagramJson": "{\n  \"version\": 1,\n  \"author\": \"Sketch2Sim\",\n  \"editor\": \"wokwi\",\n  \"parts\": [\n    {\n      \"type\": \"wokwi-arduino-uno\",\n      \"id\": \"uno\",\n      \"top\": 0,\n      \"left\": 0\n    },\n    {\n      \"type\": \"wokwi-hc-sr04\",\n      \"id\": \"ultrasonic\",\n      \"top\": -150,\n      \"left\": 255\n    },\n    {\n      \"type\": \"wokwi-buzzer\",\n      \"id\": \"buzzer\",\n      \"top\": -130,\n      \"left\": 150\n    },\n    {\n      \"type\": \"wokwi-led\",\n      \"id\": \"led1\",\n      \"top\": -120,\n      \"left\": 65,\n      \"attrs\": {\n        \"color\": \"red\"\n      }\n    },\n    {\n      \"type\": \"wokwi-resistor\",\n      \"id\": \"r1\",\n      \"top\": -85,\n      \"left\": -40,\n      \"attrs\": {\n        \"value\": \"220\"\n      }\n    }\n  ],\n  \"connections\": [\n    [\n      \"uno:5V\",\n      \"ultrasonic:VCC\",\n      \"red\",\n      []\n    ],\n    [\n      \"uno:GND.1\",\n      \"ultrasonic:GND\",\n      \"black\",\n      []\n    ],\n    [\n      \"uno:2\",\n      \"ultrasonic:TRIG\",\n      \"green\",\n      []\n    ],\n    [\n      \"uno:3\",\n      \"ultrasonic:ECHO\",\n      \"blue\",\n      []\n    ],\n    [\n      \"uno:4\",\n      \"buzzer:2\",\n      \"orange\",\n      []\n    ],\n    [\n      \"uno:GND.2\",\n      \"buzzer:1\",\n      \"black\",\n      []\n    ],\n    [\n      \"uno:5\",\n      \"r1:1\",\n      \"purple\",\n      []\n    ],\n    [\n      \"r1:2\",\n      \"led1:A\",\n      \"purple\",\n      []\n    ],\n    [\n      \"led1:C\",\n      \"uno:GND.3\",\n      \"black\",\n      []\n    ]\n  ],\n  \"dependencies\": {}\n}",
+  "diagramJson": "{\n  \"version\": 1,\n  \"author\": \"Sketch2Sim\",\n  \"editor\": \"wokwi\",\n  \"parts\": [\n    {\n      \"type\": \"wokwi-arduino-uno\",\n      \"id\": \"uno\",\n      \"top\": 0,\n      \"left\": 0\n    },\n    {\n      \"type\": \"wokwi-hc-sr04\",\n      \"id\": \"ultrasonic\",\n      \"top\": -150,\n      \"left\": 255\n    },\n    {\n      \"type\": \"wokwi-buzzer\",\n      \"id\": \"buzzer\",\n      \"top\": -130,\n      \"left\": 150\n    },\n    {\n      \"type\": \"wokwi-led\",\n      \"id\": \"led1\",\n      \"top\": -120,\n      \"left\": 65,\n      \"attrs\": {\n        \"color\": \"red\"\n      }\n    },\n    {\n      \"type\": \"wokwi-resistor\",\n      \"id\": \"r1\",\n      \"top\": -85,\n      \"left\": -40,\n      \"attrs\": {\n        \"value\": \"220\"\n      }\n    }\n  ],\n  \"connections\": [\n    [\n      \"uno:5V\",\n      \"ultrasonic:VCC\",\n      \"red\",\n      []\n    ],\n    [\n      \"uno:GND.1\",\n      \"ultrasonic:GND\",\n      \"black\",\n      []\n    ],\n    [\n      \"uno:2\",\n      \"ultrasonic:TRIG\",\n      \"green\",\n      []\n    ],\n    [\n      \"uno:3\",\n      \"ultrasonic:ECHO\",\n      \"blue\",\n      []\n    ],\n    [\n      \"uno:4\",\n      \"buzzer:2\",\n      \"orange\",\n      []\n    ],\n    [\n      \"uno:GND.1\",\n      \"buzzer:1\",\n      \"black\",\n      []\n    ],\n    [\n      \"uno:5\",\n      \"r1:1\",\n      \"purple\",\n      []\n    ],\n    [\n      \"r1:2\",\n      \"led1:A\",\n      \"purple\",\n      []\n    ],\n    [\n      \"led1:C\",\n      \"uno:GND.1\",\n      \"black\",\n      []\n    ]\n  ],\n  \"dependencies\": {}\n}",
   "sketchIno": "const int TRIG_PIN = 2;\nconst int ECHO_PIN = 3;\nconst int BUZZER_PIN = 4;\nconst int LED_PIN = 5;\n\nvoid setup() {\n  pinMode(TRIG_PIN, OUTPUT);\n  pinMode(ECHO_PIN, INPUT);\n  pinMode(BUZZER_PIN, OUTPUT);\n  pinMode(LED_PIN, OUTPUT);\n  Serial.begin(9600);\n}\n\nvoid loop() {\n  // Trigger the ultrasonic sensor\n  digitalWrite(TRIG_PIN, LOW);\n  delayMicroseconds(2);\n  digitalWrite(TRIG_PIN, HIGH);\n  delayMicroseconds(10);\n  digitalWrite(TRIG_PIN, LOW);\n\n  // Read the echo\n  long duration = pulseIn(ECHO_PIN, HIGH);\n  int distance = duration * 0.034 / 2;\n\n  // LED logic: On if distance < 20cm\n  if (distance > 0 && distance < 20) {\n    digitalWrite(LED_PIN, HIGH);\n  } else {\n    digitalWrite(LED_PIN, LOW);\n  }\n\n  // Buzzer logic: Beep faster as distance decreases\n  // Map distance (2cm to 100cm) to delay (50ms to 500ms)\n  int delayTime = map(constrain(distance, 2, 100), 2, 100, 50, 500);\n  \n  digitalWrite(BUZZER_PIN, HIGH);\n  delay(50);\n  digitalWrite(BUZZER_PIN, LOW);\n  delay(delayTime);\n}",
   "notes": [
     "Ultrasonic sensor uses pins 2 (TRIG) and 3 (ECHO).",
