@@ -1,0 +1,642 @@
+{
+ "fps": 30,
+ "total": 1091,
+ "lines": [
+  {
+   "id": "V1",
+   "text": "I drew a traffic light on paper. A minute later, it was running.",
+   "from": 9,
+   "dur": 112,
+   "captions": [
+    {
+     "from": 9,
+     "to": 16,
+     "text": "I drew a",
+     "words": [
+      {
+       "w": "I",
+       "f": 9
+      },
+      {
+       "w": "drew",
+       "f": 9
+      },
+      {
+       "w": "a",
+       "f": 14
+      }
+     ]
+    },
+    {
+     "from": 16,
+     "to": 47,
+     "text": "traffic light on",
+     "words": [
+      {
+       "w": "traffic",
+       "f": 16
+      },
+      {
+       "w": "light",
+       "f": 30
+      },
+      {
+       "w": "on",
+       "f": 44
+      }
+     ]
+    },
+    {
+     "from": 47,
+     "to": 74,
+     "text": "paper.",
+     "words": [
+      {
+       "w": "paper.",
+       "f": 47
+      }
+     ]
+    },
+    {
+     "from": 74,
+     "to": 96,
+     "text": "A minute later,",
+     "words": [
+      {
+       "w": "A",
+       "f": 74
+      },
+      {
+       "w": "minute",
+       "f": 75
+      },
+      {
+       "w": "later,",
+       "f": 83
+      }
+     ]
+    },
+    {
+     "from": 96,
+     "to": 120,
+     "text": "it was running.",
+     "words": [
+      {
+       "w": "it",
+       "f": 96
+      },
+      {
+       "w": "was",
+       "f": 97
+      },
+      {
+       "w": "running.",
+       "f": 101
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "V2",
+   "text": "I snap a photo, and Gemma 4 reads the sketch. The boxes, the lines, even my handwriting.",
+   "from": 129,
+   "dur": 205,
+   "captions": [
+    {
+     "from": 129,
+     "to": 139,
+     "text": "I snap a",
+     "words": [
+      {
+       "w": "I",
+       "f": 129
+      },
+      {
+       "w": "snap",
+       "f": 129
+      },
+      {
+       "w": "a",
+       "f": 137
+      }
+     ]
+    },
+    {
+     "from": 139,
+     "to": 168,
+     "text": "photo,",
+     "words": [
+      {
+       "w": "photo,",
+       "f": 139
+      }
+     ]
+    },
+    {
+     "from": 168,
+     "to": 200,
+     "text": "and Gemma 4",
+     "words": [
+      {
+       "w": "and",
+       "f": 168
+      },
+      {
+       "w": "Gemma",
+       "f": 179
+      },
+      {
+       "w": "4",
+       "f": 189
+      }
+     ]
+    },
+    {
+     "from": 200,
+     "to": 241,
+     "text": "reads the sketch.",
+     "words": [
+      {
+       "w": "reads",
+       "f": 200
+      },
+      {
+       "w": "the",
+       "f": 209
+      },
+      {
+       "w": "sketch.",
+       "f": 211
+      }
+     ]
+    },
+    {
+     "from": 241,
+     "to": 270,
+     "text": "The boxes,",
+     "words": [
+      {
+       "w": "The",
+       "f": 241
+      },
+      {
+       "w": "boxes,",
+       "f": 243
+      }
+     ]
+    },
+    {
+     "from": 270,
+     "to": 294,
+     "text": "the lines,",
+     "words": [
+      {
+       "w": "the",
+       "f": 270
+      },
+      {
+       "w": "lines,",
+       "f": 274
+      }
+     ]
+    },
+    {
+     "from": 294,
+     "to": 332,
+     "text": "even my handwriting.",
+     "words": [
+      {
+       "w": "even",
+       "f": 294
+      },
+      {
+       "w": "my",
+       "f": 300
+      },
+      {
+       "w": "handwriting.",
+       "f": 304
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "V3",
+   "text": "It writes the wiring and the Arduino code. Then my validator checks every wire, and fixes what the AI gets wrong.",
+   "from": 342,
+   "dur": 212,
+   "captions": [
+    {
+     "from": 342,
+     "to": 358,
+     "text": "It writes the",
+     "words": [
+      {
+       "w": "It",
+       "f": 342
+      },
+      {
+       "w": "writes",
+       "f": 346
+      },
+      {
+       "w": "the",
+       "f": 354
+      }
+     ]
+    },
+    {
+     "from": 358,
+     "to": 383,
+     "text": "wiring and the",
+     "words": [
+      {
+       "w": "wiring",
+       "f": 358
+      },
+      {
+       "w": "and",
+       "f": 380
+      },
+      {
+       "w": "the",
+       "f": 381
+      }
+     ]
+    },
+    {
+     "from": 383,
+     "to": 420,
+     "text": "Arduino code.",
+     "words": [
+      {
+       "w": "Arduino",
+       "f": 383
+      },
+      {
+       "w": "code.",
+       "f": 397
+      }
+     ]
+    },
+    {
+     "from": 420,
+     "to": 443,
+     "text": "Then my validator",
+     "words": [
+      {
+       "w": "Then",
+       "f": 420
+      },
+      {
+       "w": "my",
+       "f": 423
+      },
+      {
+       "w": "validator",
+       "f": 427
+      }
+     ]
+    },
+    {
+     "from": 443,
+     "to": 496,
+     "text": "checks every wire,",
+     "words": [
+      {
+       "w": "checks",
+       "f": 443
+      },
+      {
+       "w": "every",
+       "f": 462
+      },
+      {
+       "w": "wire,",
+       "f": 469
+      }
+     ]
+    },
+    {
+     "from": 496,
+     "to": 514,
+     "text": "and fixes what",
+     "words": [
+      {
+       "w": "and",
+       "f": 496
+      },
+      {
+       "w": "fixes",
+       "f": 499
+      },
+      {
+       "w": "what",
+       "f": 511
+      }
+     ]
+    },
+    {
+     "from": 514,
+     "to": 536,
+     "text": "the AI gets",
+     "words": [
+      {
+       "w": "the",
+       "f": 514
+      },
+      {
+       "w": "AI",
+       "f": 516
+      },
+      {
+       "w": "gets",
+       "f": 530
+      }
+     ]
+    },
+    {
+     "from": 536,
+     "to": 553,
+     "text": "wrong.",
+     "words": [
+      {
+       "w": "wrong.",
+       "f": 536
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "V4",
+   "text": "Paste it into Wokwi, press play. Red. Green. Yellow. A real simulation, from a pencil sketch.",
+   "from": 562,
+   "dur": 221,
+   "captions": [
+    {
+     "from": 562,
+     "to": 573,
+     "text": "Paste it into",
+     "words": [
+      {
+       "w": "Paste",
+       "f": 562
+      },
+      {
+       "w": "it",
+       "f": 567
+      },
+      {
+       "w": "into",
+       "f": 569
+      }
+     ]
+    },
+    {
+     "from": 573,
+     "to": 595,
+     "text": "Wokwi,",
+     "words": [
+      {
+       "w": "Wokwi,",
+       "f": 573
+      }
+     ]
+    },
+    {
+     "from": 595,
+     "to": 627,
+     "text": "press play.",
+     "words": [
+      {
+       "w": "press",
+       "f": 595
+      },
+      {
+       "w": "play.",
+       "f": 604
+      }
+     ]
+    },
+    {
+     "from": 627,
+     "to": 648,
+     "text": "Red.",
+     "words": [
+      {
+       "w": "Red.",
+       "f": 627
+      }
+     ]
+    },
+    {
+     "from": 648,
+     "to": 671,
+     "text": "Green.",
+     "words": [
+      {
+       "w": "Green.",
+       "f": 648
+      }
+     ]
+    },
+    {
+     "from": 671,
+     "to": 694,
+     "text": "Yellow.",
+     "words": [
+      {
+       "w": "Yellow.",
+       "f": 671
+      }
+     ]
+    },
+    {
+     "from": 694,
+     "to": 737,
+     "text": "A real simulation,",
+     "words": [
+      {
+       "w": "A",
+       "f": 694
+      },
+      {
+       "w": "real",
+       "f": 695
+      },
+      {
+       "w": "simulation,",
+       "f": 706
+      }
+     ]
+    },
+    {
+     "from": 737,
+     "to": 755,
+     "text": "from a pencil",
+     "words": [
+      {
+       "w": "from",
+       "f": 737
+      },
+      {
+       "w": "a",
+       "f": 741
+      },
+      {
+       "w": "pencil",
+       "f": 743
+      }
+     ]
+    },
+    {
+     "from": 755,
+     "to": 782,
+     "text": "sketch.",
+     "words": [
+      {
+       "w": "sketch.",
+       "f": 755
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "V5",
+   "text": "Built solo in one hack day with Gemma 4 and Claude Code. It's open source. Search Sketch2Sim on GitHub.",
+   "from": 790,
+   "dur": 228,
+   "captions": [
+    {
+     "from": 790,
+     "to": 814,
+     "text": "Built solo in",
+     "words": [
+      {
+       "w": "Built",
+       "f": 790
+      },
+      {
+       "w": "solo",
+       "f": 794
+      },
+      {
+       "w": "in",
+       "f": 809
+      }
+     ]
+    },
+    {
+     "from": 814,
+     "to": 847,
+     "text": "one hack day",
+     "words": [
+      {
+       "w": "one",
+       "f": 814
+      },
+      {
+       "w": "hack",
+       "f": 820
+      },
+      {
+       "w": "day",
+       "f": 829
+      }
+     ]
+    },
+    {
+     "from": 847,
+     "to": 875,
+     "text": "with Gemma 4",
+     "words": [
+      {
+       "w": "with",
+       "f": 847
+      },
+      {
+       "w": "Gemma",
+       "f": 851
+      },
+      {
+       "w": "4",
+       "f": 859
+      }
+     ]
+    },
+    {
+     "from": 875,
+     "to": 909,
+     "text": "and Claude Code.",
+     "words": [
+      {
+       "w": "and",
+       "f": 875
+      },
+      {
+       "w": "Claude",
+       "f": 876
+      },
+      {
+       "w": "Code.",
+       "f": 887
+      }
+     ]
+    },
+    {
+     "from": 909,
+     "to": 948,
+     "text": "It's open source.",
+     "words": [
+      {
+       "w": "It's",
+       "f": 909
+      },
+      {
+       "w": "open",
+       "f": 911
+      },
+      {
+       "w": "source.",
+       "f": 919
+      }
+     ]
+    },
+    {
+     "from": 948,
+     "to": 995,
+     "text": "Search Sketch2Sim on",
+     "words": [
+      {
+       "w": "Search",
+       "f": 948
+      },
+      {
+       "w": "Sketch2Sim",
+       "f": 954
+      },
+      {
+       "w": "on",
+       "f": 991
+      }
+     ]
+    },
+    {
+     "from": 995,
+     "to": 1016,
+     "text": "GitHub.",
+     "words": [
+      {
+       "w": "GitHub.",
+       "f": 995
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}

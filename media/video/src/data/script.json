@@ -1,0 +1,18 @@
+{
+  "voice": "en-US-AndrewMultilingualNeural",
+  "rate": "-4%",
+  "pitch": "+0Hz",
+  "gapAfter": 0.35,
+  "lines": [
+    { "id": "S1", "scene": "title", "lead": 2.6, "text": "This is Sketch2Sim, built today at MLH Hacktoberfest Hack Day Batam." },
+    { "id": "S2", "scene": "problem", "text": "Every hardware idea starts as a sketch on paper. Turning that sketch into a working circuit is the slow part: picking pins, adding resistors, writing firmware, and then hunting for the one wire you put in backwards." },
+    { "id": "S3", "scene": "idea", "text": "So we asked a simple question. What if the sketch was the source code?" },
+    { "id": "S4a", "scene": "draw", "lead": 1.0, "text": "Draw your circuit right in the browser, or just snap a photo of your notebook, and hit compile." },
+    { "id": "S4b", "scene": "compile", "text": "Gemma 4 reads the drawing. The boxes, the lines, even the handwritten notes. And it returns a complete circuit: the parts, the wiring with a reason for every pin, and the Arduino firmware." },
+    { "id": "S5", "scene": "trust", "text": "But we don't trust the model blindly. Every answer goes through a deterministic validator. It locks each part to a real Wokwi component, fixes pin names, adds missing resistors, and flips parts that are wired backwards. And it shows you every repair it made." },
+    { "id": "S6", "scene": "proof", "text": "Now paste both files into Wokwi, a real circuit simulator, and press play. The traffic light from a pencil sketch is running." },
+    { "id": "S7", "scene": "numbers", "text": "Five hand-drawn sketches. Five circuits running in Wokwi. We cut compile time from about a hundred seconds to thirty. And if the network drops on stage, presets fall back to a saved run, clearly labeled as cached." },
+    { "id": "S8", "scene": "vision", "text": "Next up: ESP32 and Arduino UNO Q, more parts, and a classroom mode for vocational schools, where students lose hours to one wrong jumper wire." },
+    { "id": "S9", "scene": "end", "tail": 3.0, "text": "Sketch2Sim. Open source, MIT licensed, built with Gemma 4 and Claude Code. Try it today." }
+  ]
+}

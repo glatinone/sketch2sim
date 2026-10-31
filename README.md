@@ -34,6 +34,8 @@ Built in one afternoon at **MLH Hacktoberfest Hack Day Batam** (31 Oct 2026) for
    reversed polarity is swapped back, servos move to PWM pins, serial pins 0/1 are avoided, and missing
    GND/5V wires are added. Each repair is shown in the
    UI as an **"Auto-fixed by validator"** chip. Details: [`src/engine/ENGINE.md`](src/engine/ENGINE.md).
+
+> **Build log:** how this was planned, built, shipped and shared in one hack day, with the timeline, every commit, and the lessons: [`docs/BUILD-LOG.md`](docs/BUILD-LOG.md). Planning docs and the live coordination logs are in [`docs/hackday/`](docs/hackday/), the dev.to series sources in [`docs/blog/`](docs/blog/).
 4. **Wokwi:** *Open Wokwi* opens a fresh Arduino Uno project; *Copy diagram.json* and *Copy sketch.ino*
    put each file on the clipboard. Paste, press ▶.
 

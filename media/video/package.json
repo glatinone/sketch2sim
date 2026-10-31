@@ -1,0 +1,24 @@
+{
+  "name": "sketch2sim-video",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Sketch2Sim demo video (Remotion)",
+  "dependencies": {
+    "@remotion/cli": "4.0.532",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "remotion": "4.0.532"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.7",
+    "typescript": "5.9.3"
+  },
+  "scripts": {
+    "voice": "python scripts/voice.py",
+    "dev": "remotion studio",
+    "lint": "tsc --noEmit",
+    "render": "remotion render Sketch2SimDemo out/sketch2sim-demo-1080p.mp4 --codec=h264 --crf=18 --pixel-format=yuv420p --audio-codec=aac --audio-bitrate=192k --concurrency=2",
+    "render:short": "remotion render Sketch2SimShort out/sketch2sim-short-9x16.mp4 --codec=h264 --crf=18 --pixel-format=yuv420p --audio-codec=aac --audio-bitrate=192k --concurrency=2",
+    "render:4x5": "remotion render Sketch2SimDemo4x5 out/sketch2sim-demo-4x5.mp4 --codec=h264 --crf=20 --pixel-format=yuv420p --audio-codec=aac --audio-bitrate=192k --concurrency=2"
+  }
+}

@@ -1,0 +1,331 @@
+{
+ "fps": 30,
+ "durationInFrames": 3357,
+ "lines": [
+  {
+   "id": "S1",
+   "scene": "title",
+   "text": "This is Sketch2Sim, built today at MLH Hacktoberfest Hack Day Batam.",
+   "sceneStart": 0,
+   "audioStart": 78,
+   "audioFrames": 147,
+   "sceneFrames": 235,
+   "captions": [
+    {
+     "text": "This is Sketch2Sim, built today at MLH Hacktoberfest",
+     "from": 78,
+     "to": 209
+    },
+    {
+     "text": "Hack Day Batam.",
+     "from": 202,
+     "to": 232
+    }
+   ]
+  },
+  {
+   "id": "S2",
+   "scene": "problem",
+   "text": "Every hardware idea starts as a sketch on paper. Turning that sketch into a working circuit is the slow part: picking pins, adding resistors, writing firmware, and then hunting for the one wire you put in backwards.",
+   "sceneStart": 235,
+   "audioStart": 243,
+   "audioFrames": 440,
+   "sceneFrames": 458,
+   "captions": [
+    {
+     "text": "Every hardware idea starts as a sketch on paper.",
+     "from": 243,
+     "to": 349
+    },
+    {
+     "text": "Turning that sketch into a working circuit is",
+     "from": 353,
+     "to": 441
+    },
+    {
+     "text": "the slow part: picking pins,",
+     "from": 433,
+     "to": 521
+    },
+    {
+     "text": "adding resistors, writing firmware,",
+     "from": 521,
+     "to": 597
+    },
+    {
+     "text": "and then hunting for the one wire you",
+     "from": 602,
+     "to": 662
+    },
+    {
+     "text": "put in backwards.",
+     "from": 655,
+     "to": 690
+    }
+   ]
+  },
+  {
+   "id": "S3",
+   "scene": "idea",
+   "text": "So we asked a simple question. What if the sketch was the source code?",
+   "sceneStart": 693,
+   "audioStart": 700,
+   "audioFrames": 108,
+   "sceneFrames": 126,
+   "captions": [
+    {
+     "text": "So we asked a simple question.",
+     "from": 700,
+     "to": 751
+    },
+    {
+     "text": "What if the sketch was the source code?",
+     "from": 755,
+     "to": 815
+    }
+   ]
+  },
+  {
+   "id": "S4a",
+   "scene": "draw",
+   "text": "Draw your circuit right in the browser, or just snap a photo of your notebook, and hit compile.",
+   "sceneStart": 818,
+   "audioStart": 848,
+   "audioFrames": 167,
+   "sceneFrames": 207,
+   "captions": [
+    {
+     "text": "Draw your circuit right in the browser,",
+     "from": 848,
+     "to": 908
+    },
+    {
+     "text": "or just snap a photo of your notebook,",
+     "from": 912,
+     "to": 986
+    },
+    {
+     "text": "and hit compile.",
+     "from": 990,
+     "to": 1023
+    }
+   ]
+  },
+  {
+   "id": "S4b",
+   "scene": "compile",
+   "text": "Gemma 4 reads the drawing. The boxes, the lines, even the handwritten notes. And it returns a complete circuit: the parts, the wiring with a reason for every pin, and the Arduino firmware.",
+   "sceneStart": 1026,
+   "audioStart": 1033,
+   "audioFrames": 395,
+   "sceneFrames": 413,
+   "captions": [
+    {
+     "text": "Gemma 4 reads the drawing.",
+     "from": 1033,
+     "to": 1097
+    },
+    {
+     "text": "The boxes, the lines,",
+     "from": 1102,
+     "to": 1157
+    },
+    {
+     "text": "even the handwritten notes.",
+     "from": 1156,
+     "to": 1202
+    },
+    {
+     "text": "And it returns a complete circuit:",
+     "from": 1207,
+     "to": 1263
+    },
+    {
+     "text": "the parts, the wiring with a reason for",
+     "from": 1268,
+     "to": 1352
+    },
+    {
+     "text": "every pin, and the Arduino firmware.",
+     "from": 1348,
+     "to": 1436
+    }
+   ]
+  },
+  {
+   "id": "S5",
+   "scene": "trust",
+   "text": "But we don't trust the model blindly. Every answer goes through a deterministic validator. It locks each part to a real Wokwi component, fixes pin names, adds missing resistors, and flips parts that are wired backwards. And it shows you every repair it made.",
+   "sceneStart": 1438,
+   "audioStart": 1446,
+   "audioFrames": 493,
+   "sceneFrames": 511,
+   "captions": [
+    {
+     "text": "But we don't trust the model blindly.",
+     "from": 1446,
+     "to": 1504
+    },
+    {
+     "text": "Every answer goes through a deterministic validator.",
+     "from": 1509,
+     "to": 1602
+    },
+    {
+     "text": "It locks each part to a real Wokwi",
+     "from": 1607,
+     "to": 1684
+    },
+    {
+     "text": "component, fixes pin names,",
+     "from": 1676,
+     "to": 1753
+    },
+    {
+     "text": "adds missing resistors, and flips parts that are wired backwards.",
+     "from": 1756,
+     "to": 1876
+    },
+    {
+     "text": "And it shows you every repair it made.",
+     "from": 1881,
+     "to": 1946
+    }
+   ]
+  },
+  {
+   "id": "S6",
+   "scene": "proof",
+   "text": "Now paste both files into Wokwi, a real circuit simulator, and press play. The traffic light from a pencil sketch is running.",
+   "sceneStart": 1949,
+   "audioStart": 1956,
+   "audioFrames": 258,
+   "sceneFrames": 276,
+   "captions": [
+    {
+     "text": "Now paste both files into Wokwi,",
+     "from": 1956,
+     "to": 2030
+    },
+    {
+     "text": "a real circuit simulator,",
+     "from": 2034,
+     "to": 2087
+    },
+    {
+     "text": "and press play.",
+     "from": 2091,
+     "to": 2124
+    },
+    {
+     "text": "The traffic light from a pencil sketch is running.",
+     "from": 2129,
+     "to": 2221
+    }
+   ]
+  },
+  {
+   "id": "S7",
+   "scene": "numbers",
+   "text": "Five hand-drawn sketches. Five circuits running in Wokwi. We cut compile time from about a hundred seconds to thirty. And if the network drops on stage, presets fall back to a saved run, clearly labeled as cached.",
+   "sceneStart": 2224,
+   "audioStart": 2232,
+   "audioFrames": 421,
+   "sceneFrames": 439,
+   "captions": [
+    {
+     "text": "Five hand-drawn sketches.",
+     "from": 2233,
+     "to": 2284
+    },
+    {
+     "text": "Five circuits running in Wokwi.",
+     "from": 2292,
+     "to": 2350
+    },
+    {
+     "text": "We cut compile time from about a hundred",
+     "from": 2355,
+     "to": 2421
+    },
+    {
+     "text": "seconds to thirty.",
+     "from": 2413,
+     "to": 2454
+    },
+    {
+     "text": "And if the network drops on stage,",
+     "from": 2459,
+     "to": 2527
+    },
+    {
+     "text": "presets fall back to a saved run,",
+     "from": 2526,
+     "to": 2601
+    },
+    {
+     "text": "clearly labeled as cached.",
+     "from": 2605,
+     "to": 2663
+    }
+   ]
+  },
+  {
+   "id": "S8",
+   "scene": "vision",
+   "text": "Next up: ESP32 and Arduino UNO Q, more parts, and a classroom mode for vocational schools, where students lose hours to one wrong jumper wire.",
+   "sceneStart": 2664,
+   "audioStart": 2671,
+   "audioFrames": 343,
+   "sceneFrames": 361,
+   "captions": [
+    {
+     "text": "Next up: ESP32 and Arduino UNO Q,",
+     "from": 2671,
+     "to": 2804
+    },
+    {
+     "text": "more parts, and a classroom mode for vocational",
+     "from": 2813,
+     "to": 2900
+    },
+    {
+     "text": "schools, where students lose hours to one wrong jumper wire.",
+     "from": 2892,
+     "to": 3022
+    }
+   ]
+  },
+  {
+   "id": "S9",
+   "scene": "end",
+   "text": "Sketch2Sim. Open source, MIT licensed, built with Gemma 4 and Claude Code. Try it today.",
+   "sceneStart": 3025,
+   "audioStart": 3032,
+   "audioFrames": 224,
+   "sceneFrames": 332,
+   "captions": [
+    {
+     "text": "Sketch2Sim.",
+     "from": 3032,
+     "to": 3071
+    },
+    {
+     "text": "Open source, MIT licensed,",
+     "from": 3074,
+     "to": 3155
+    },
+    {
+     "text": "built with Gemma 4 and Claude Code.",
+     "from": 3155,
+     "to": 3230
+    },
+    {
+     "text": "Try it today.",
+     "from": 3235,
+     "to": 3263
+    }
+   ]
+  }
+ ]
+}
