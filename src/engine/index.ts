@@ -88,12 +88,15 @@ export const compileSketch: CompileSketch = async (input) => {
   };
 };
 
-// Last-good results for the presets (src/presets/cached/<id>.json). import.meta.glob only exists under Vite;
-// the CLI (Node) never calls this.
-const cachedModules: Record<string, CompileResult> =
-  typeof import.meta.glob === "function"
-    ? import.meta.glob<CompileResult>("../presets/cached/*.json", { eager: true, import: "default" })
-    : {};
+// Last-good results for the presets (src/presets/cached/<id>.json). Vite rewrites the import.meta.glob(...)
+// call itself (import.meta.glob is never a runtime value, so no typeof guard); under the Node CLI the call
+// throws and there is simply no cache.
+let cachedModules: Record<string, CompileResult> = {};
+try {
+  cachedModules = import.meta.glob<CompileResult>("../presets/cached/*.json", { eager: true, import: "default" });
+} catch {
+  // Node CLI: no glob
+}
 
 export function loadCachedResult(presetId: string): CompileResult | null {
   const hit = Object.entries(cachedModules).find(([path]) => path.endsWith(`/${presetId}.json`));
