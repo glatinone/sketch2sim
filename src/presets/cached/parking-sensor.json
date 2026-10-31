@@ -1,0 +1,121 @@
+{
+  "projectTitle": "Ultrasonic Proximity Alarm",
+  "summary": "An ultrasonic sensor detects distance. If an object is closer than 20cm, the LED turns on. The buzzer beeps faster as objects get closer.",
+  "board": "uno",
+  "parts": [
+    {
+      "id": "uno",
+      "type": "wokwi-arduino-uno",
+      "label": "Arduino Uno"
+    },
+    {
+      "id": "ultrasonic",
+      "type": "wokwi-hc-sr04",
+      "label": "Ultrasonic Sensor"
+    },
+    {
+      "id": "buzzer",
+      "type": "wokwi-buzzer",
+      "label": "Buzzer"
+    },
+    {
+      "id": "led1",
+      "type": "wokwi-led",
+      "label": "Red LED",
+      "attrs": {
+        "color": "red"
+      }
+    },
+    {
+      "id": "r1",
+      "type": "wokwi-resistor",
+      "label": "220 ohm",
+      "attrs": {
+        "value": "220"
+      }
+    }
+  ],
+  "wires": [
+    {
+      "from": "uno:5V",
+      "to": "ultrasonic:VCC",
+      "color": "red",
+      "signal": "POWER",
+      "rationale": "Power for the ultrasonic sensor."
+    },
+    {
+      "from": "uno:GND.1",
+      "to": "ultrasonic:GND",
+      "color": "black",
+      "signal": "GND",
+      "rationale": "Ground for the ultrasonic sensor."
+    },
+    {
+      "from": "uno:2",
+      "to": "ultrasonic:TRIG",
+      "color": "green",
+      "signal": "DIGITAL",
+      "rationale": "Trigger signal for ultrasonic sensor."
+    },
+    {
+      "from": "uno:3",
+      "to": "ultrasonic:ECHO",
+      "color": "blue",
+      "signal": "DIGITAL",
+      "rationale": "Echo signal from ultrasonic sensor."
+    },
+    {
+      "from": "uno:4",
+      "to": "buzzer:2",
+      "color": "orange",
+      "signal": "DIGITAL",
+      "rationale": "Signal to drive the buzzer."
+    },
+    {
+      "from": "uno:GND.2",
+      "to": "buzzer:1",
+      "color": "black",
+      "signal": "GND",
+      "rationale": "Ground for the buzzer."
+    },
+    {
+      "from": "uno:5",
+      "to": "r1:1",
+      "color": "purple",
+      "signal": "DIGITAL",
+      "rationale": "Signal to drive the LED via resistor."
+    },
+    {
+      "from": "r1:2",
+      "to": "led1:A",
+      "color": "purple",
+      "signal": "DIGITAL",
+      "rationale": "Current flows through resistor to LED anode."
+    },
+    {
+      "from": "led1:C",
+      "to": "uno:GND.3",
+      "color": "black",
+      "signal": "GND",
+      "rationale": "LED cathode to ground."
+    }
+  ],
+  "diagramJson": "{\n  \"version\": 1,\n  \"author\": \"Sketch2Sim\",\n  \"editor\": \"wokwi\",\n  \"parts\": [\n    {\n      \"type\": \"wokwi-arduino-uno\",\n      \"id\": \"uno\",\n      \"top\": 0,\n      \"left\": 0\n    },\n    {\n      \"type\": \"wokwi-hc-sr04\",\n      \"id\": \"ultrasonic\",\n      \"top\": -80,\n      \"left\": 330\n    },\n    {\n      \"type\": \"wokwi-buzzer\",\n      \"id\": \"buzzer\",\n      \"top\": 50,\n      \"left\": 330\n    },\n    {\n      \"type\": \"wokwi-led\",\n      \"id\": \"led1\",\n      \"top\": 160,\n      \"left\": 330,\n      \"attrs\": {\n        \"color\": \"red\"\n      }\n    },\n    {\n      \"type\": \"wokwi-resistor\",\n      \"id\": \"r1\",\n      \"top\": -80,\n      \"left\": 540,\n      \"attrs\": {\n        \"value\": \"220\"\n      }\n    }\n  ],\n  \"connections\": [\n    [\n      \"uno:5V\",\n      \"ultrasonic:VCC\",\n      \"red\",\n      []\n    ],\n    [\n      \"uno:GND.1\",\n      \"ultrasonic:GND\",\n      \"black\",\n      []\n    ],\n    [\n      \"uno:2\",\n      \"ultrasonic:TRIG\",\n      \"green\",\n      []\n    ],\n    [\n      \"uno:3\",\n      \"ultrasonic:ECHO\",\n      \"blue\",\n      []\n    ],\n    [\n      \"uno:4\",\n      \"buzzer:2\",\n      \"orange\",\n      []\n    ],\n    [\n      \"uno:GND.2\",\n      \"buzzer:1\",\n      \"black\",\n      []\n    ],\n    [\n      \"uno:5\",\n      \"r1:1\",\n      \"purple\",\n      []\n    ],\n    [\n      \"r1:2\",\n      \"led1:A\",\n      \"purple\",\n      []\n    ],\n    [\n      \"led1:C\",\n      \"uno:GND.3\",\n      \"black\",\n      []\n    ]\n  ],\n  \"dependencies\": {}\n}",
+  "sketchIno": "const int TRIG_PIN = 2;\nconst int ECHO_PIN = 3;\nconst int BUZZER_PIN = 4;\nconst int LED_PIN = 5;\n\nvoid setup() {\n  pinMode(TRIG_PIN, OUTPUT);\n  pinMode(ECHO_PIN, INPUT);\n  pinMode(BUZZER_PIN, OUTPUT);\n  pinMode(LED_PIN, OUTPUT);\n  Serial.begin(9600);\n}\n\nvoid loop() {\n  // Trigger the ultrasonic sensor\n  digitalWrite(TRIG_PIN, LOW);\n  delayMicroseconds(2);\n  digitalWrite(TRIG_PIN, HIGH);\n  delayMicroseconds(10);\n  digitalWrite(TRIG_PIN, LOW);\n\n  // Read the echo\n  long duration = pulseIn(ECHO_PIN, HIGH);\n  int distance = duration * 0.034 / 2;\n\n  // LED logic: On if distance < 20cm\n  if (distance > 0 && distance < 20) {\n    digitalWrite(LED_PIN, HIGH);\n  } else {\n    digitalWrite(LED_PIN, LOW);\n  }\n\n  // Buzzer logic: Beep faster as distance decreases\n  // Map distance (2cm to 100cm) to delay (50ms to 500ms)\n  int delayTime = map(constrain(distance, 2, 100), 2, 100, 50, 500);\n  \n  digitalWrite(BUZZER_PIN, HIGH);\n  delay(50);\n  digitalWrite(BUZZER_PIN, LOW);\n  delay(delayTime);\n}",
+  "notes": [
+    "Ultrasonic sensor uses pins 2 (TRIG) and 3 (ECHO).",
+    "Buzzer is on pin 4.",
+    "LED is on pin 5 with a 220 ohm resistor.",
+    "The beep interval decreases as the object gets closer to the sensor."
+  ],
+  "fixes": [
+    {
+      "what": "Fixed reversed polarity",
+      "before": "buzzer: signal on 1, GND on 2",
+      "after": "signal on 2, GND on 1"
+    }
+  ],
+  "source": "cached",
+  "latencyMs": 92285,
+  "modelId": "gemma-4-26b-a4b-it"
+}

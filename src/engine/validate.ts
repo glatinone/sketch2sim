@@ -138,6 +138,22 @@ export function validateCircuit(raw: RawCircuit, rawText: string): ValidCircuit 
     sketch = sketch.replace(re, `$1${newPin}`);
   };
 
+  // ---- 2b. polarised two-pin parts wired backwards (signal on the - leg, GND on the + leg) -> swap legs
+  const isGndEnd = (e: string) => e.startsWith(`${UNO_ID}:`) && UNO_GND.includes(e.split(":")[1]);
+  for (const p of parts.filter((x) => x.type === "wokwi-buzzer" || x.type === "wokwi-led")) {
+    const pins = Object.entries(catOf(p.id)?.pins ?? {});
+    const neg = pins.find(([, role]) => role === "GND")?.[0];
+    const pos = pins.find(([, role]) => role === "SIGNAL")?.[0];
+    if (!neg || !pos) continue;
+    const negWire = touching(`${p.id}:${neg}`).find((w) => !isGndEnd(other(w, `${p.id}:${neg}`)));
+    const posWire = touching(`${p.id}:${pos}`).find((w) => isGndEnd(other(w, `${p.id}:${pos}`)));
+    if (!negWire || !posWire) continue;
+    for (const [w, from, to] of [[negWire, neg, pos], [posWire, pos, neg]] as const) {
+      if (w.from === `${p.id}:${from}`) w.from = `${p.id}:${to}`; else w.to = `${p.id}:${to}`;
+    }
+    fix("Fixed reversed polarity", `${p.id}: signal on ${neg}, GND on ${pos}`, `signal on ${pos}, GND on ${neg}`);
+  }
+
   // ---- 3. servo signal must be on a PWM pin
   for (const p of parts.filter((x) => x.type === "wokwi-servo")) {
     for (const w of touching(`${p.id}:PWM`)) {

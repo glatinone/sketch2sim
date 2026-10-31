@@ -1,0 +1,83 @@
+{
+  "projectTitle": "Button-controlled LED",
+  "summary": "Pressing the button turns the LED on.",
+  "board": "uno",
+  "parts": [
+    {
+      "id": "uno",
+      "type": "wokwi-arduino-uno",
+      "label": "Arduino Uno"
+    },
+    {
+      "id": "btn1",
+      "type": "wokwi-pushbutton",
+      "label": "Button",
+      "attrs": {
+        "color": "green"
+      }
+    },
+    {
+      "id": "r1",
+      "type": "wokwi-resistor",
+      "label": "220 ohm",
+      "attrs": {
+        "value": "220"
+      }
+    },
+    {
+      "id": "led1",
+      "type": "wokwi-led",
+      "label": "Red LED",
+      "attrs": {
+        "color": "red"
+      }
+    }
+  ],
+  "wires": [
+    {
+      "from": "uno:2",
+      "to": "btn1:1.l",
+      "color": "green",
+      "signal": "DIGITAL",
+      "rationale": "Pin 2 reads the button with the internal pull-up."
+    },
+    {
+      "from": "btn1:2.l",
+      "to": "uno:GND.1",
+      "color": "black",
+      "signal": "GND",
+      "rationale": "Pressing the button connects the pin to ground."
+    },
+    {
+      "from": "uno:13",
+      "to": "r1:1",
+      "color": "blue",
+      "signal": "DIGITAL",
+      "rationale": "Pin 13 drives the LED circuit."
+    },
+    {
+      "from": "r1:2",
+      "to": "led1:A",
+      "color": "blue",
+      "signal": "DIGITAL",
+      "rationale": "Resistor limits current to the LED."
+    },
+    {
+      "from": "led1:C",
+      "to": "uno:GND.2",
+      "color": "black",
+      "signal": "GND",
+      "rationale": "LED cathode to ground."
+    }
+  ],
+  "diagramJson": "{\n  \"version\": 1,\n  \"author\": \"Sketch2Sim\",\n  \"editor\": \"wokwi\",\n  \"parts\": [\n    {\n      \"type\": \"wokwi-arduino-uno\",\n      \"id\": \"uno\",\n      \"top\": 0,\n      \"left\": 0\n    },\n    {\n      \"type\": \"wokwi-pushbutton\",\n      \"id\": \"btn1\",\n      \"top\": -80,\n      \"left\": 330,\n      \"attrs\": {\n        \"color\": \"green\"\n      }\n    },\n    {\n      \"type\": \"wokwi-resistor\",\n      \"id\": \"r1\",\n      \"top\": 20,\n      \"left\": 330,\n      \"attrs\": {\n        \"value\": \"220\"\n      }\n    },\n    {\n      \"type\": \"wokwi-led\",\n      \"id\": \"led1\",\n      \"top\": 85,\n      \"left\": 330,\n      \"attrs\": {\n        \"color\": \"red\"\n      }\n    }\n  ],\n  \"connections\": [\n    [\n      \"uno:2\",\n      \"btn1:1.l\",\n      \"green\",\n      []\n    ],\n    [\n      \"btn1:2.l\",\n      \"uno:GND.1\",\n      \"black\",\n      []\n    ],\n    [\n      \"uno:13\",\n      \"r1:1\",\n      \"blue\",\n      []\n    ],\n    [\n      \"r1:2\",\n      \"led1:A\",\n      \"blue\",\n      []\n    ],\n    [\n      \"led1:C\",\n      \"uno:GND.2\",\n      \"black\",\n      []\n    ]\n  ],\n  \"dependencies\": {}\n}",
+  "sketchIno": "const int BUTTON_PIN = 2;\nconst int LED_PIN = 13;\n\nvoid setup() {\n  pinMode(BUTTON_PIN, INPUT_PULLUP);\n  pinMode(LED_PIN, OUTPUT);\n}\n\nvoid loop() {\n  // Since we use INPUT_PULLUP, LOW means the button is pressed\n  if (digitalRead(BUTTON_PIN) == LOW) {\n    digitalWrite(LED_PIN, HIGH);\n  } else {\n    digitalWrite(LED_PIN, LOW);\n  }\n}",
+  "notes": [
+    "Button uses INPUT_PULLUP, so no external resistor is needed for the button side.",
+    "LED is protected by a 220 ohm resistor."
+  ],
+  "fixes": [],
+  "source": "cached",
+  "latencyMs": 45219,
+  "modelId": "gemma-4-26b-a4b-it"
+}

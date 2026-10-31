@@ -44,19 +44,22 @@ export const compileSketch: CompileSketch = async (input) => {
     jsonMode: JSON_MODE,
   };
 
-  let { text, modelId } = await callWithFallback({ ...base, prompt: userPrompt(input.board) });
-  let raw: RawCircuit;
+  // Gemma 4 latency has a long tail (45s typical, >90s sometimes), so fire two identical requests
+  // and keep whichever returns parseable JSON first.
+  const attempt = async (prompt: string) => {
+    const r = await callWithFallback({ ...base, prompt });
+    return { ...r, raw: asCircuit(extractJson(r.text)) };
+  };
+  let winner: { text: string; modelId: string; raw: RawCircuit };
   try {
-    raw = asCircuit(extractJson(text));
+    winner = await Promise.any([attempt(userPrompt(input.board)), attempt(userPrompt(input.board))]);
   } catch (err) {
-    // one retry, telling the model what went wrong
-    ({ text, modelId } = await callWithFallback({
-      ...base,
-      modelId,
-      prompt: `${userPrompt(input.board)}\n\n${RETRY_PROMPT((err as Error).message)}`,
-    }));
-    raw = asCircuit(extractJson(text));
+    const first = (err as AggregateError).errors?.[0] ?? err;
+    if ((first as CompileError).kind !== "PARSE") throw first;
+    // both answers were broken JSON: one retry, telling the model what went wrong
+    winner = await attempt(`${userPrompt(input.board)}\n\n${RETRY_PROMPT((first as Error).message)}`);
   }
+  const { text, modelId, raw } = winner;
 
   const circuit = validateCircuit(raw, text);
   let sketchIno = circuit.sketchIno;
