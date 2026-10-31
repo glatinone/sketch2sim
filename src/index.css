@@ -41,6 +41,10 @@ body {
   100% { transform: translateX(300%); }
 }
 
+/* swipeable rows (tabs, canvas tools): scroll by touch, no scrollbar chrome */
+.s2s-noscrollbar { scrollbar-width: none; }
+.s2s-noscrollbar::-webkit-scrollbar { display: none; }
+
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-thumb { background: #334155; border-radius: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }

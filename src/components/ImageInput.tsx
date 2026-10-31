@@ -56,6 +56,7 @@ export default function ImageInput({ ref }: { ref?: Ref<ImageInputHandle> }) {
             key={id}
             type="button"
             onClick={() => setTab(id)}
+            aria-pressed={tab === id}
             className={`flex min-w-0 flex-1 items-center justify-center gap-1.5 rounded-md py-2.5 text-sm font-semibold transition sm:gap-2 lg:py-2 lg:text-base ${
               tab === id ? "bg-slate-700 text-white" : "text-slate-400 hover:text-slate-200"
             }`}

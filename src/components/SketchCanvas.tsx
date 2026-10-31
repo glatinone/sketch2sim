@@ -88,7 +88,7 @@ export default function SketchCanvas({ ref }: { ref?: Ref<SketchCanvasHandle> })
   return (
     <div className="flex h-full min-h-0 flex-col gap-2">
       {/* phones: one swipeable tool row instead of three wrapped rows eating the canvas */}
-      <div className="flex shrink-0 items-center gap-1.5 overflow-x-auto pb-1 lg:flex-wrap lg:overflow-visible lg:pb-0">
+      <div className="s2s-noscrollbar flex shrink-0 items-center gap-1.5 overflow-x-auto overflow-y-hidden lg:flex-wrap lg:overflow-visible">
         {toolBtn("pen", <Pencil className="size-4" />, "Pen")}
         {toolBtn("eraser", <Eraser className="size-4" />, "Eraser")}
         {toolBtn("text", <Type className="size-4" />, "Text note")}

@@ -81,10 +81,14 @@ export default function TopBar(p: Props) {
             {p.apiKey || p.mock ? <span className="hidden sm:inline">Settings</span> : "API key"}
           </button>
           {p.settingsOpen && (
+            // phones: dim the page behind the sheet; tapping it closes the sheet
+            <div className="fixed inset-0 z-40 bg-black/60 lg:hidden" onClick={() => p.onSettingsOpen(false)} />
+          )}
+          {p.settingsOpen && (
             <div className="fixed inset-x-3 top-16 z-50 rounded-xl border border-slate-700 bg-slate-900 p-4 shadow-2xl shadow-black/60 lg:absolute lg:inset-x-auto lg:right-0 lg:top-12 lg:w-[26rem]">
               <div className="mb-3 flex items-center justify-between">
                 <h2 className="text-lg font-bold text-white">Settings</h2>
-                <button type="button" onClick={() => p.onSettingsOpen(false)} className="text-slate-400 hover:text-white">
+                <button type="button" aria-label="Close settings" onClick={() => p.onSettingsOpen(false)} className="p-1 text-slate-400 hover:text-white">
                   <X className="size-5" />
                 </button>
               </div>

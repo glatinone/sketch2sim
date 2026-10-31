@@ -111,7 +111,7 @@ function ResultView({ result, fallbackReason }: { result: CompileResult; fallbac
         )}
       </div>
 
-      <nav className="-mx-1 flex gap-1 overflow-x-auto border-b border-slate-800 px-1">
+      <nav className="s2s-noscrollbar -mx-1 flex gap-1 overflow-x-auto overflow-y-hidden border-b border-slate-800 px-1">
         {tabs.map(({ id, label, icon: Icon, count }) => (
           <button
             key={id}
@@ -153,7 +153,7 @@ function Idle() {
         </h2>
         <p className="mb-5 text-base text-slate-400 lg:mb-6 lg:text-lg">
           <span className="lg:hidden">
-            Snap your sketch above, then tap <b className="text-slate-200">Compile sketch</b>.
+            Add a sketch above (camera, upload, draw or preset), then tap <b className="text-slate-200">Compile sketch</b>.
           </span>
           <span className="hidden lg:inline">
             Press <b className="text-slate-200">Compile</b> or <kbd className="rounded bg-slate-800 px-1.5 text-base">Ctrl</kbd>+
