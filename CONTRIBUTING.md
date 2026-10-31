@@ -1,6 +1,6 @@
 # Contributing to Sketch2Sim
 
-Thanks for helping turn napkin sketches into running circuits! Sketch2Sim is small on purpose: one React
+Thanks for helping turn paper sketches into running circuits! Sketch2Sim is small on purpose: one React
 app, one engine folder, one contract file between them.
 
 ## Setup
@@ -33,7 +33,7 @@ No API key? Open `http://localhost:5173/?mock` to work on the UI with a built-in
 ## Good first issues
 
 1. **ESP32 target.** Add `"esp32"` to `Board`, an ESP32 DevKit entry in the catalog (`wokwi-esp32-devkit-v1`)
-   with its pin rules (no analog on ADC2 while Wi-Fi is on, input-only GPIO 34–39), and enable the board
+   with its pin rules (no analog on ADC2 while Wi-Fi is on, input-only GPIO 34 to 39), and enable the board
    selector. Wokwi new-project URL: `https://wokwi.com/projects/new/esp32`.
 2. **More parts.** Each new part is one catalog entry in `src/engine/catalog.ts` (type, pins, aliases,
    power needs) plus a canvas stamp in `src/ui/sketchOps.ts`. Ideas: SSD1306 OLED (I2C), LCD1602,

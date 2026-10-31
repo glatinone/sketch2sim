@@ -1,6 +1,6 @@
 # Sketch2Sim
 
-**Draw a napkin circuit → get a circuit that runs in Wokwi.**
+**From a paper sketch to a running circuit.**
 
 Sketch2Sim turns a rough hand-drawn circuit (drawn in the app, or a photo of paper) into a ready-to-paste
 Wokwi `diagram.json` + Arduino `sketch.ino`. **Gemma 4** reads the image; a **deterministic validator**
@@ -25,16 +25,16 @@ Built in one afternoon at **MLH Hacktoberfest Hack Day Batam** (31 Oct 2026) for
                        + firmware (JSON)        PWM/analog rules, GND
 ```
 
-1. **Input** — draw on the canvas (pen, eraser, text, and part *stamps*: UNO, LED, BUTTON, BUZZER, SERVO, POT,
+1. **Input:** draw on the canvas (pen, eraser, text, and part *stamps*: UNO, LED, BUTTON, BUZZER, SERVO, POT,
    ULTRASONIC), upload a photo (auto-resized to 1280 px), snap it with the webcam, or pick a preset.
 2. **Gemma 4** (`gemma-4-26b-a4b-it` by default, editable) gets the image plus a part catalog and returns
    JSON: parts, wires with a rationale per pin, and Arduino firmware.
-3. **Validator** — the model is never trusted blindly. Every part is mapped onto a fixed catalog of real
+3. **Validator:** the model is never trusted blindly. Every part is mapped onto a fixed catalog of real
    Wokwi parts, pin names are normalised (`D13` → `13`, `GND` → `GND.1`), LEDs get 220 Ω series resistors,
    reversed polarity is swapped back, servos move to PWM pins, serial pins 0/1 are avoided, and missing
    GND/5V wires are added. Each repair is shown in the
    UI as an **"Auto-fixed by validator"** chip. Details: [`src/engine/ENGINE.md`](src/engine/ENGINE.md).
-4. **Wokwi** — *Open Wokwi* opens a fresh Arduino Uno project; *Copy diagram.json* and *Copy sketch.ino*
+4. **Wokwi:** *Open Wokwi* opens a fresh Arduino Uno project; *Copy diagram.json* and *Copy sketch.ino*
    put each file on the clipboard. Paste, press ▶.
 
 **Honest by design:** if the live API is down, presets fall back to a result saved from an earlier real
