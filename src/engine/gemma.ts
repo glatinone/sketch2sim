@@ -1,7 +1,7 @@
 import { CompileError } from "../contract/types.ts";
 
 const API_BASE = "https://generativelanguage.googleapis.com/v1beta/models";
-const TIMEOUT_MS = 90_000; // gemma-4-31b-it takes ~60s when busy
+const TIMEOUT_MS = 150_000; // Gemma 4 emits ~4-5k tokens (incl. thinking) at ~47 tok/s
 
 export interface GemmaRequest {
   apiKey: string;

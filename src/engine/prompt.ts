@@ -17,6 +17,9 @@ Wiring rules:
   signal (POWER|GND|DIGITAL|ANALOG|PWM|I2C), rationale (one short sentence: why this pin).
 - If the sketch is ambiguous, pick the simplest working interpretation.
 
+Be fast and brief: decide quickly, do not deliberate or double-check at length. Keep the answer compact:
+rationale max 10 words, summary 1 sentence, at most 2 notes, NO comments inside the code, no Serial prints unless needed.
+
 Firmware: a complete Arduino sketch (setup + loop) that makes the drawn behavior work. Use #include <Servo.h> for servos.
 Pin numbers in code MUST match the wires.
 
