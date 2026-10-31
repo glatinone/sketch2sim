@@ -25,7 +25,7 @@ export interface ValidCircuit {
   fixes: Fix[];
 }
 
-const WIRE_COLORS = ["red", "black", "green", "blue", "yellow", "orange", "purple", "gray", "white", "brown", "cyan", "magenta"];
+const WIRE_COLORS = ["black", "brown", "red", "orange", "gold", "green", "blue", "violet", "gray", "white", "cyan", "limegreen", "magenta", "purple", "yellow"]; // Wokwi editor palette
 const SIGNALS: Wire["signal"][] = ["POWER", "GND", "DIGITAL", "ANALOG", "PWM", "I2C"];
 
 function colorFor(signal: Wire["signal"]): string {

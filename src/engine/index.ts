@@ -42,6 +42,10 @@ export const compileSketch: CompileSketch = async (input) => {
     sketchIno = fallbackSketch(circuit.parts, circuit.wires);
   }
 
+  // Wokwi needs the Servo library added in the Library Manager tab
+  const notes = [...circuit.notes];
+  if (sketchIno.includes("Servo.h")) notes.unshift("In Wokwi: open Library Manager and add \"Servo\".");
+
   return {
     projectTitle: circuit.projectTitle,
     summary: circuit.summary,
@@ -50,7 +54,7 @@ export const compileSketch: CompileSketch = async (input) => {
     wires: circuit.wires,
     diagramJson: buildDiagramJson(circuit.parts, circuit.wires),
     sketchIno,
-    notes: circuit.notes,
+    notes,
     fixes: circuit.fixes,
     source: "live",
     latencyMs: Date.now() - started,

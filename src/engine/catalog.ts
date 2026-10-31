@@ -1,6 +1,7 @@
 // Whitelist of Wokwi parts the engine accepts. Pin names must match Wokwi exactly,
 // otherwise the pasted diagram.json silently drops wires.
-// Source: docs.wokwi.com/parts/<type> (see probe/wokwi-research.md).
+// Verified against wokwi-docs + wokwi-cli diagram-lint registry (see probe/wokwi-research.md).
+// Pushbutton: 1.l<->1.r and 2.l<->2.r are internally joined; pressing joins side 1 to side 2.
 
 export type PinRole = "GND" | "POWER" | "SIGNAL";
 
@@ -41,8 +42,8 @@ export const UNO: CatalogPart = {
     "5v": "5V",
     vcc: "5V",
     "+5v": "5V",
-    "3v3": "3.3V",
-    "3.3v": "3.3V",
+    "3v3": "5V", // 3.3V is not simulated in Wokwi
+    "3.3v": "5V",
     vin: "VIN",
   },
   size: { w: 275, h: 200 },
@@ -167,7 +168,7 @@ export function normalizePin(part: CatalogPart, rawPin: string): string | undefi
 export function catalogForPrompt(): string {
   return ALL_PARTS.map((p) => {
     const pins = p === UNO
-      ? `digital 2-13 (PWM: ${UNO_PWM.join(",")}), analog A0-A5, 5V, 3.3V, GND.1, GND.2, GND.3`
+      ? `digital 2-13 (PWM: ${UNO_PWM.join(",")}), analog A0-A5, 5V, GND.1, GND.2, GND.3 (3.3V is not simulated: always use 5V)`
       : Object.keys(p.pins).join(", ");
     const attrs = p.defaultAttrs ? ` attrs e.g. ${JSON.stringify(p.defaultAttrs)}` : "";
     return `- ${p.type} (${p.label}): pins ${pins}${attrs}`;
