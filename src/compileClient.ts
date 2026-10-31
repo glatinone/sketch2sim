@@ -4,7 +4,7 @@ import type { CompileSketch } from "./contract/types.ts";
 import { compileSketch, DEFAULT_MODEL_ID, loadCachedResult, PRESET_IDS } from "./engine/index.ts";
 import { mockCompile } from "./ui/mockCompile.ts";
 
-const MOCK_BY_DEFAULT = true;
+const MOCK_BY_DEFAULT = false;
 
 function urlFlag(name: string): boolean {
   try {

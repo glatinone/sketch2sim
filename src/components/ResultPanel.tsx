@@ -38,6 +38,8 @@ export default function ResultPanel({ state, onOpenSettings }: { state: RunState
 function ResultView({ result, fallbackReason }: { result: CompileResult; fallbackReason?: string }) {
   const [tab, setTab] = useState<Tab>("circuit");
   const cached = result.source === "cached";
+  // Notes the presenter must act on inside Wokwi (e.g. "add Servo in Library Manager").
+  const wokwiNotes = result.notes.filter((n) => /librar|wokwi/i.test(n));
   const tabs: { id: Tab; label: string; icon: typeof Cpu; count?: number }[] = [
     { id: "circuit", label: "Circuit", icon: CircuitBoard },
     { id: "diagram", label: "diagram.json", icon: FileJson },
@@ -91,6 +93,13 @@ function ResultView({ result, fallbackReason }: { result: CompileResult; fallbac
           1. paste into the <b className="text-slate-200">diagram.json</b> tab · 2. paste <b className="text-slate-200">sketch.ino</b> · 3. press{" "}
           <b className="text-emerald-300">▶</b>
         </span>
+        {wokwiNotes.length > 0 && (
+          <ul className="w-full space-y-0.5 border-t border-emerald-500/20 pt-2 text-sm text-amber-200">
+            {wokwiNotes.map((n) => (
+              <li key={n}>⚠ {n}</li>
+            ))}
+          </ul>
+        )}
       </div>
 
       <nav className="flex gap-1 border-b border-slate-800">
@@ -153,14 +162,17 @@ function Idle() {
   );
 }
 
+// Gemma 4 always "thinks" before answering: a live compile takes ~45 s (up to 90 s).
+// The stages keep the screen alive; validation + firmware happen right after the model replies.
 const STAGES: [number, string][] = [
   [0, "Sending sketch to Gemma 4…"],
   [2, "Gemma 4 reading sketch…"],
-  [7, "Identifying parts…"],
-  [12, "Choosing pins…"],
-  [18, "Validating pins…"],
-  [24, "Writing firmware…"],
-  [35, "Still thinking — big multimodal model, hang on…"],
+  [10, "Identifying parts…"],
+  [20, "Choosing Arduino pins…"],
+  [30, "Reasoning about the wiring…"],
+  [40, "Writing firmware…"],
+  [55, "Validating pins…"],
+  [70, "Still thinking — big multimodal model, almost there…"],
 ];
 
 function Compiling({ startedAt, previewUrl }: { startedAt: number; previewUrl: string }) {
@@ -180,7 +192,9 @@ function Compiling({ startedAt, previewUrl }: { startedAt: number; previewUrl: s
         </div>
         <div className="text-center">
           <div className="text-2xl font-bold text-white">{stage}</div>
-          <div className="mt-1 font-mono text-slate-400">{secs.toFixed(1)} s</div>
+          <div className="mt-1 font-mono text-slate-400">
+            {secs.toFixed(1)} s <span className="font-sans text-slate-500">· usually ~45 s</span>
+          </div>
         </div>
         <div className="h-2 w-full overflow-hidden rounded-full bg-slate-800">
           <div className="s2s-indeterminate h-full w-1/3 rounded-full bg-cyan-400" />
