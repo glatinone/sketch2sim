@@ -1,7 +1,7 @@
 import { CompileError } from "../contract/types.ts";
 
 const API_BASE = "https://generativelanguage.googleapis.com/v1beta/models";
-const TIMEOUT_MS = 45_000;
+const TIMEOUT_MS = 90_000; // gemma-4-31b-it takes ~60s when busy
 
 export interface GemmaRequest {
   apiKey: string;
@@ -27,6 +27,7 @@ export async function callGemma(req: GemmaRequest): Promise<string> {
     generationConfig: {
       temperature: 0.2,
       maxOutputTokens: 8192,
+      thinkingConfig: { includeThoughts: false }, // budget/level are rejected for Gemma 4
       ...(req.jsonMode ? { responseMimeType: "application/json" } : {}),
     },
   };
@@ -38,9 +39,11 @@ export async function callGemma(req: GemmaRequest): Promise<string> {
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
   let res: Response;
   try {
-    res = await fetch(`${API_BASE}/${encodeURIComponent(req.modelId)}:generateContent`, {
+    // AI Studio's new "AQ." keys are only accepted as ?key=, not via the x-goog-api-key header
+    const url = `${API_BASE}/${encodeURIComponent(req.modelId)}:generateContent?key=${encodeURIComponent(req.apiKey)}`;
+    res = await fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json", "x-goog-api-key": req.apiKey },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body),
       signal: controller.signal,
     });
@@ -58,7 +61,9 @@ export async function callGemma(req: GemmaRequest): Promise<string> {
     candidates?: Array<{ content?: { parts?: Array<{ text?: string; thought?: boolean }> }; finishReason?: string }>;
   };
   if (!res.ok) {
-    throw new CompileError(`Gemini API ${res.status}: ${data.error?.message ?? "unknown error"}`, "API");
+    const e = new CompileError(`Gemini API ${res.status}: ${data.error?.message ?? "unknown error"}`, "API");
+    e.raw = String(res.status);
+    throw e;
   }
 
   // Skip "thought" parts if the model emits reasoning traces.

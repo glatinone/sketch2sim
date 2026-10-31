@@ -8,9 +8,28 @@ import type { RawCircuit } from "./validate.ts";
 import { buildDiagramJson, fallbackSketch, looksLikeArduinoSketch } from "./wokwi.ts";
 
 // Set from the A0 probe (status/A.md).
-export const DEFAULT_MODEL_ID = "gemma-4-PLACEHOLDER";
-const USE_SYSTEM_INSTRUCTION = false;
-const JSON_MODE = false;
+export const DEFAULT_MODEL_ID = "gemma-4-26b-a4b-it"; // 8/8 ok in probe; 31b was 3/8 (500/503) and ~60s
+const FALLBACK_MODEL_ID = "gemma-4-26b-a4b-it";
+const USE_SYSTEM_INSTRUCTION = true;
+const JSON_MODE = true;
+
+// 500/503 ("high demand") are common on Gemma 4: retry once, on the fallback model if a different one was asked for.
+async function callWithFallback(req: Parameters<typeof callGemma>[0]): Promise<{ text: string; modelId: string }> {
+  try {
+    return { text: await callGemma(req), modelId: req.modelId };
+  } catch (err) {
+    const status = (err as CompileError).raw;
+    if ((err as CompileError).kind !== "API" || (status !== "500" && status !== "503")) throw err;
+    const modelId = FALLBACK_MODEL_ID;
+    return { text: await callGemma({ ...req, modelId }), modelId };
+  }
+}
+
+// JSON mode sometimes returns a top-level array instead of the object we asked for.
+function asCircuit(value: unknown): RawCircuit {
+  if (Array.isArray(value)) return (value.find((v) => v && typeof v === "object" && !Array.isArray(v)) ?? {}) as RawCircuit;
+  return (value ?? {}) as RawCircuit;
+}
 
 export const PRESET_IDS = ["blink-button", "parking-sensor", "servo-pot"] as const;
 
@@ -25,14 +44,18 @@ export const compileSketch: CompileSketch = async (input) => {
     jsonMode: JSON_MODE,
   };
 
-  let text = await callGemma({ ...base, prompt: userPrompt(input.board) });
+  let { text, modelId } = await callWithFallback({ ...base, prompt: userPrompt(input.board) });
   let raw: RawCircuit;
   try {
-    raw = extractJson(text) as RawCircuit;
+    raw = asCircuit(extractJson(text));
   } catch (err) {
     // one retry, telling the model what went wrong
-    text = await callGemma({ ...base, prompt: `${userPrompt(input.board)}\n\n${RETRY_PROMPT((err as Error).message)}` });
-    raw = extractJson(text) as RawCircuit;
+    ({ text, modelId } = await callWithFallback({
+      ...base,
+      modelId,
+      prompt: `${userPrompt(input.board)}\n\n${RETRY_PROMPT((err as Error).message)}`,
+    }));
+    raw = asCircuit(extractJson(text));
   }
 
   const circuit = validateCircuit(raw, text);
@@ -58,7 +81,7 @@ export const compileSketch: CompileSketch = async (input) => {
     fixes: circuit.fixes,
     source: "live",
     latencyMs: Date.now() - started,
-    modelId: base.modelId,
+    modelId,
   };
 };
 

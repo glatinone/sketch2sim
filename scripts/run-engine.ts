@@ -10,11 +10,10 @@ if (!imagePath) {
   process.exit(1);
 }
 
-let apiKey = process.env.GEMINI_API_KEY ?? "";
+// probe/.env wins: this laptop has an unrelated proxy key in the GEMINI_API_KEY env var
 const envFile = resolve(import.meta.dirname, "../../probe/.env");
-if (!apiKey && existsSync(envFile)) {
-  apiKey = readFileSync(envFile, "utf8").match(/^GEMINI_API_KEY=(.+)$/m)?.[1].trim() ?? "";
-}
+let apiKey = existsSync(envFile) ? (readFileSync(envFile, "utf8").match(/^GEMINI_API_KEY=(\S+)/m)?.[1] ?? "") : "";
+if (!apiKey) apiKey = process.env.GEMINI_API_KEY ?? "";
 
 const ext = extname(imagePath).toLowerCase();
 try {
