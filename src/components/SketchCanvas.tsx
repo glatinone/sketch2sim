@@ -22,7 +22,7 @@ export default function SketchCanvas({ ref }: { ref?: Ref<SketchCanvasHandle> })
   useImperativeHandle(ref, () => ({
     exportImage() {
       if (!ops.length) return null;
-      // Paper theme (white bg, dark ink) = what a photo of a real napkin looks like.
+      // Paper theme (white bg, dark ink) = what a photo of a real paper sketch looks like.
       const previewUrl = opsToDataUrl(ops, "paper");
       return { ...splitDataUrl(previewUrl), previewUrl };
     },
@@ -77,7 +77,7 @@ export default function SketchCanvas({ ref }: { ref?: Ref<SketchCanvasHandle> })
       type="button"
       title={title}
       onClick={() => setTool(t)}
-      className={`h-9 rounded-md px-2.5 text-sm font-semibold transition ${
+      className={`h-10 shrink-0 rounded-md px-2.5 text-sm font-semibold transition lg:h-9 ${
         sameTool(tool, t) ? "bg-cyan-400 text-slate-950" : "bg-slate-800 text-slate-200 hover:bg-slate-700"
       }`}
     >
@@ -87,13 +87,14 @@ export default function SketchCanvas({ ref }: { ref?: Ref<SketchCanvasHandle> })
 
   return (
     <div className="flex h-full min-h-0 flex-col gap-2">
-      <div className="flex flex-wrap items-center gap-1.5">
+      {/* phones: one swipeable tool row instead of three wrapped rows eating the canvas */}
+      <div className="flex shrink-0 items-center gap-1.5 overflow-x-auto pb-1 lg:flex-wrap lg:overflow-visible lg:pb-0">
         {toolBtn("pen", <Pencil className="size-4" />, "Pen")}
         {toolBtn("eraser", <Eraser className="size-4" />, "Eraser")}
         {toolBtn("text", <Type className="size-4" />, "Text note")}
         <span className="mx-1 h-6 w-px bg-slate-700" />
         {STAMPS.map((s) => toolBtn({ stamp: s }, s, `Stamp ${s} box — then click the canvas`))}
-        <span className="ml-auto flex gap-1.5">
+        <span className="ml-auto flex shrink-0 gap-1.5">
           <button
             type="button"
             title="Undo"
@@ -127,7 +128,7 @@ export default function SketchCanvas({ ref }: { ref?: Ref<SketchCanvasHandle> })
         />
         {!ops.length && (
           <p className="pointer-events-none absolute inset-0 grid place-items-center text-center text-base text-slate-500">
-            Pick a stamp (UNO, LED…) and click to place it,
+            Pick a stamp (UNO, LED…) and tap to place it,
             <br />
             then use the pen to draw the wires between boxes.
           </p>

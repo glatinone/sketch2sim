@@ -57,7 +57,7 @@ function ResultView({ result, fallbackReason }: { result: CompileResult; fallbac
     <section className="flex h-full min-h-0 flex-col gap-3">
       {/* Header strip */}
       <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-        <h2 className="mr-auto text-2xl font-extrabold text-white">{result.projectTitle}</h2>
+        <h2 className="mr-auto w-full text-xl font-extrabold text-white sm:w-auto lg:text-2xl">{result.projectTitle}</h2>
         {cached && (
           <span
             className="flex items-center gap-1.5 rounded-md bg-amber-400 px-3 py-1 text-base font-black tracking-wide text-slate-950 shadow-lg shadow-amber-500/30"
@@ -82,20 +82,23 @@ function ResultView({ result, fallbackReason }: { result: CompileResult; fallbac
       )}
 
       {/* Wokwi flow: the demo's wow moment, always one click away */}
-      <div className="flex flex-wrap items-center gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-2.5">
+      <div className="grid grid-cols-1 gap-2 rounded-xl border border-emerald-500/30 bg-emerald-500/5 p-2.5 sm:flex sm:flex-wrap sm:items-center">
         <a
           href={WOKWI_NEW_UNO}
           target="_blank"
           rel="noreferrer"
-          className="flex h-10 items-center gap-2 rounded-md bg-emerald-400 px-4 text-base font-bold text-slate-950 hover:bg-emerald-300"
+          className="flex h-12 items-center justify-center gap-2 rounded-md bg-emerald-400 px-4 text-base font-bold text-slate-950 hover:bg-emerald-300 sm:h-10 sm:justify-start"
         >
           <ExternalLink className="size-4" /> Open Wokwi
         </a>
-        <ChevronRight className="size-4 text-slate-600" />
+        <ChevronRight className="hidden size-4 text-slate-600 sm:block" />
         <CopyButton big text={result.diagramJson} label="Copy diagram.json" />
-        <ChevronRight className="size-4 text-slate-600" />
+        <ChevronRight className="hidden size-4 text-slate-600 sm:block" />
         <CopyButton big text={result.sketchIno} label="Copy sketch.ino" />
-        <span className="ml-1 text-sm text-slate-400">
+        <span className="text-sm text-slate-300 sm:hidden">
+          In Wokwi: paste <b>diagram.json</b>, paste <b>sketch.ino</b>, press <b className="text-emerald-300">▶</b>.
+        </span>
+        <span className="ml-1 hidden text-sm text-slate-400 sm:inline">
           1. paste into the <b className="text-slate-200">diagram.json</b> tab · 2. paste <b className="text-slate-200">sketch.ino</b> · 3. press{" "}
           <b className="text-emerald-300">▶</b> · tip: press <kbd className="rounded bg-slate-800 px-1 text-slate-200">F</kbd> in Wokwi to fit the view
         </span>
@@ -108,13 +111,13 @@ function ResultView({ result, fallbackReason }: { result: CompileResult; fallbac
         )}
       </div>
 
-      <nav className="flex gap-1 border-b border-slate-800">
+      <nav className="-mx-1 flex gap-1 overflow-x-auto border-b border-slate-800 px-1">
         {tabs.map(({ id, label, icon: Icon, count }) => (
           <button
             key={id}
             type="button"
             onClick={() => setTab(id)}
-            className={`-mb-px flex items-center gap-2 border-b-2 px-4 py-2 text-base font-semibold transition ${
+            className={`-mb-px flex shrink-0 items-center gap-2 border-b-2 px-3 py-2.5 text-sm font-semibold whitespace-nowrap transition lg:px-4 lg:py-2 lg:text-base ${
               tab === id ? "border-cyan-400 text-white" : "border-transparent text-slate-400 hover:text-slate-200"
             }`}
           >
@@ -125,7 +128,7 @@ function ResultView({ result, fallbackReason }: { result: CompileResult; fallbac
         ))}
       </nav>
 
-      <div className="min-h-0 flex-1 overflow-auto pr-1">
+      <div className="min-h-0 flex-1 lg:overflow-auto lg:pr-1">
         {tab === "circuit" && <ResultCircuit result={result} />}
         {tab === "diagram" && <ResultCode filename="diagram.json" code={result.diagramJson} />}
         {tab === "ino" && <ResultCode filename="sketch.ino" code={result.sketchIno} />}
@@ -143,22 +146,27 @@ function Idle() {
     ["Run in Wokwi", "Paste diagram.json + sketch.ino into a real simulator and press ▶."],
   ];
   return (
-    <div className="grid h-full place-items-center">
+    <div className="grid h-full place-items-center py-2 lg:py-0">
       <div className="max-w-xl">
-        <h2 className="mb-1 flex items-center gap-2 text-3xl font-extrabold text-white">
-          <Sparkles className="size-7 text-cyan-400" /> Napkin → running circuit
+        <h2 className="mb-1 flex items-center gap-2 text-2xl font-extrabold text-white lg:text-3xl">
+          <Sparkles className="size-6 shrink-0 text-cyan-400 lg:size-7" /> Paper sketch → running circuit
         </h2>
-        <p className="mb-6 text-lg text-slate-400">
-          Press <b className="text-slate-200">Compile</b> or <kbd className="rounded bg-slate-800 px-1.5 text-base">Ctrl</kbd>+
-          <kbd className="rounded bg-slate-800 px-1.5 text-base">Enter</kbd>
+        <p className="mb-5 text-base text-slate-400 lg:mb-6 lg:text-lg">
+          <span className="lg:hidden">
+            Snap your sketch above, then tap <b className="text-slate-200">Compile sketch</b>.
+          </span>
+          <span className="hidden lg:inline">
+            Press <b className="text-slate-200">Compile</b> or <kbd className="rounded bg-slate-800 px-1.5 text-base">Ctrl</kbd>+
+            <kbd className="rounded bg-slate-800 px-1.5 text-base">Enter</kbd>
+          </span>
         </p>
         <ol className="space-y-3">
           {steps.map(([t, d], i) => (
             <li key={t} className="flex gap-4">
-              <span className="grid size-9 shrink-0 place-items-center rounded-full bg-cyan-400/15 text-lg font-bold text-cyan-300">{i + 1}</span>
+              <span className="grid size-8 shrink-0 place-items-center rounded-full bg-cyan-400/15 font-bold text-cyan-300 lg:size-9 lg:text-lg">{i + 1}</span>
               <div>
-                <div className="text-lg font-bold text-slate-100">{t}</div>
-                <div className="text-slate-400">{d}</div>
+                <div className="font-bold text-slate-100 lg:text-lg">{t}</div>
+                <div className="text-sm text-slate-400 lg:text-base">{d}</div>
               </div>
             </li>
           ))}
@@ -189,14 +197,14 @@ function Compiling({ startedAt, previewUrl }: { startedAt: number; previewUrl: s
   const secs = (now - startedAt) / 1000;
   const stage = STAGES.filter(([s]) => secs >= s).at(-1)![1];
   return (
-    <div className="grid h-full place-items-center">
-      <div className="flex w-full max-w-lg flex-col items-center gap-5">
+    <div className="grid h-full place-items-center py-2 lg:py-0">
+      <div className="flex w-full max-w-lg flex-col items-center gap-4 lg:gap-5">
         <div className="relative w-full overflow-hidden rounded-xl border border-cyan-500/40 bg-white">
           <img src={previewUrl} alt="" className="aspect-[3/2] w-full object-contain opacity-80" />
           <div className="s2s-scan absolute inset-x-0 h-16" />
         </div>
         <div className="text-center">
-          <div className="text-2xl font-bold text-white">{stage}</div>
+          <div className="text-xl font-bold text-white lg:text-2xl">{stage}</div>
           <div className="mt-1 font-mono text-slate-400">
             {secs.toFixed(1)} s <span className="font-sans text-slate-500">· usually ~30 s</span>
           </div>
@@ -232,7 +240,7 @@ function ErrorView({
   const soft = kind === "INPUT";
   return (
     <div className="grid h-full place-items-center">
-      <div className={`w-full max-w-2xl rounded-xl border p-5 ${soft ? "border-slate-700 bg-slate-900" : "border-rose-500/50 bg-rose-500/5"}`}>
+      <div className={`w-full max-w-2xl rounded-xl border p-4 lg:p-5 ${soft ? "border-slate-700 bg-slate-900" : "border-rose-500/50 bg-rose-500/5"}`}>
         <div className="flex items-start gap-3">
           <AlertTriangle className={`mt-1 size-6 shrink-0 ${soft ? "text-slate-400" : "text-rose-400"}`} />
           <div className="min-w-0 flex-1">
@@ -240,7 +248,7 @@ function ErrorView({
               <h2 className="text-xl font-bold text-white">{ERROR_TITLE[kind] ?? "Compile failed"}</h2>
               {!soft && <span className="rounded bg-rose-500/20 px-2 py-0.5 font-mono text-sm font-bold text-rose-300">{kind}</span>}
             </div>
-            <p className="mt-1 break-words text-lg text-slate-300">{message}</p>
+            <p className="mt-1 break-words text-base text-slate-300 lg:text-lg">{message}</p>
             {kind === "NO_KEY" && (
               <button
                 type="button"

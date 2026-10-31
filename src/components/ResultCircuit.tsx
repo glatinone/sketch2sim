@@ -44,7 +44,7 @@ export default function ResultCircuit({ result }: { result: CompileResult }) {
   return (
     <div className="space-y-5">
       <section>
-        <p className="text-lg leading-relaxed text-slate-200">{result.summary}</p>
+        <p className="text-base leading-relaxed text-slate-200 lg:text-lg">{result.summary}</p>
       </section>
 
       <section>
@@ -83,7 +83,27 @@ export default function ResultCircuit({ result }: { result: CompileResult }) {
 
       <section>
         <h3 className="mb-2 text-sm font-bold uppercase tracking-wider text-slate-400">Wiring ({result.wires.length})</h3>
-        <div className="overflow-hidden rounded-xl border border-slate-800">
+        {/* phones: one card per wire (a 5-column table doesn't fit) */}
+        <ul className="space-y-2 md:hidden">
+          {result.wires.map((w, i) => (
+            <li key={i} className="rounded-xl border border-slate-800 bg-slate-900/60 p-3">
+              <div className="flex flex-wrap items-center gap-2 text-sm">
+                <Endpoint at={w.from} labels={labels} />
+                <span
+                  className="block h-1.5 w-6 shrink-0 rounded-full ring-1 ring-slate-600"
+                  style={{ background: WIRE_HEX[w.color.toLowerCase()] ?? w.color }}
+                  title={`${w.color} wire`}
+                />
+                <Endpoint at={w.to} labels={labels} />
+                <span className={`ml-auto rounded border px-1.5 py-0.5 text-xs font-bold ${SIGNAL_STYLE[w.signal] ?? SIGNAL_STYLE.DIGITAL}`}>
+                  {w.signal}
+                </span>
+              </div>
+              {w.rationale && <p className="mt-1.5 text-sm text-slate-400">{w.rationale}</p>}
+            </li>
+          ))}
+        </ul>
+        <div className="hidden overflow-hidden rounded-xl border border-slate-800 md:block">
           <table className="w-full text-left">
             <thead className="bg-slate-900 text-xs uppercase tracking-wider text-slate-500">
               <tr>

@@ -22,28 +22,28 @@ export default function TopBar(p: Props) {
 
   useEffect(() => {
     if (!p.settingsOpen) return;
-    const close = (e: MouseEvent) => {
+    const close = (e: PointerEvent) => {
       if (popRef.current && !popRef.current.contains(e.target as Node)) p.onSettingsOpen(false);
     };
     const esc = (e: KeyboardEvent) => e.key === "Escape" && p.onSettingsOpen(false);
-    document.addEventListener("mousedown", close);
+    document.addEventListener("pointerdown", close);
     document.addEventListener("keydown", esc);
     return () => {
-      document.removeEventListener("mousedown", close);
+      document.removeEventListener("pointerdown", close);
       document.removeEventListener("keydown", esc);
     };
   }, [p]);
 
   return (
-    <header className="flex h-16 shrink-0 items-center gap-4 border-b border-slate-800 bg-slate-950 px-5">
+    <header className="sticky top-0 z-50 flex h-14 shrink-0 items-center gap-2 border-b border-slate-800 bg-slate-950/95 px-3 backdrop-blur lg:static lg:h-16 lg:gap-4 lg:px-5">
       <div className="flex items-center gap-2.5">
-        <CircuitBoard className="size-7 text-cyan-400" />
-        <h1 className="text-2xl font-extrabold tracking-tight text-white">
+        <CircuitBoard className="size-6 text-cyan-400 lg:size-7" />
+        <h1 className="text-xl font-extrabold tracking-tight text-white lg:text-2xl">
           Sketch<span className="text-cyan-400">2</span>Sim
         </h1>
       </div>
-      <span className="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-3 py-1 text-sm font-semibold text-emerald-300">
-        Gemma 4 multimodal
+      <span className="rounded-full border border-emerald-500/40 bg-emerald-500/10 px-2 py-0.5 text-xs font-semibold whitespace-nowrap text-emerald-300 lg:px-3 lg:py-1 lg:text-sm">
+        Gemma 4<span className="hidden sm:inline"> multimodal</span>
       </span>
       {p.mock && (
         <span className="rounded-full border border-fuchsia-500/50 bg-fuchsia-500/10 px-3 py-1 text-sm font-semibold text-fuchsia-300">
@@ -51,8 +51,8 @@ export default function TopBar(p: Props) {
         </span>
       )}
 
-      <div className="ml-auto flex items-center gap-3">
-        <label className="flex items-center gap-2 text-sm text-slate-400">
+      <div className="ml-auto flex items-center gap-2 lg:gap-3">
+        <label className="hidden items-center gap-2 text-sm text-slate-400 lg:flex">
           Board
           <select
             value={p.board}
@@ -70,17 +70,18 @@ export default function TopBar(p: Props) {
           <button
             type="button"
             onClick={() => p.onSettingsOpen(!p.settingsOpen)}
-            className={`flex h-10 items-center gap-2 rounded-md border px-3 text-base ${
+            aria-label="Settings"
+            className={`flex h-10 items-center gap-2 rounded-md border px-2.5 text-sm lg:px-3 lg:text-base ${
               p.apiKey || p.mock
                 ? "border-slate-700 bg-slate-900 text-slate-200 hover:bg-slate-800"
                 : "border-amber-500/60 bg-amber-500/10 text-amber-200 hover:bg-amber-500/20"
             }`}
           >
             <Settings className="size-5" />
-            {p.apiKey || p.mock ? "Settings" : "Add API key"}
+            {p.apiKey || p.mock ? <span className="hidden sm:inline">Settings</span> : "API key"}
           </button>
           {p.settingsOpen && (
-            <div className="absolute right-0 top-12 z-50 w-[26rem] rounded-xl border border-slate-700 bg-slate-900 p-4 shadow-2xl shadow-black/60">
+            <div className="fixed inset-x-3 top-16 z-50 rounded-xl border border-slate-700 bg-slate-900 p-4 shadow-2xl shadow-black/60 lg:absolute lg:inset-x-auto lg:right-0 lg:top-12 lg:w-[26rem]">
               <div className="mb-3 flex items-center justify-between">
                 <h2 className="text-lg font-bold text-white">Settings</h2>
                 <button type="button" onClick={() => p.onSettingsOpen(false)} className="text-slate-400 hover:text-white">
@@ -98,7 +99,7 @@ export default function TopBar(p: Props) {
                   placeholder="Paste key from aistudio.google.com"
                   autoComplete="off"
                   spellCheck={false}
-                  className="h-10 flex-1 rounded-md border border-slate-700 bg-slate-950 px-3 font-mono text-sm text-slate-100 outline-none focus:border-cyan-500"
+                  className="h-11 min-w-0 flex-1 rounded-md border border-slate-700 bg-slate-950 px-3 font-mono text-base text-slate-100 outline-none focus:border-cyan-500 lg:h-10 lg:text-sm"
                 />
                 <button
                   type="button"
@@ -117,7 +118,7 @@ export default function TopBar(p: Props) {
                   value={p.modelId}
                   onChange={(e) => p.onModelId(e.target.value)}
                   spellCheck={false}
-                  className="h-10 flex-1 rounded-md border border-slate-700 bg-slate-950 px-3 font-mono text-sm text-slate-100 outline-none focus:border-cyan-500"
+                  className="h-11 min-w-0 flex-1 rounded-md border border-slate-700 bg-slate-950 px-3 font-mono text-base text-slate-100 outline-none focus:border-cyan-500 lg:h-10 lg:text-sm"
                 />
                 <button
                   type="button"
@@ -139,7 +140,7 @@ export default function TopBar(p: Props) {
           onClick={p.onCompile}
           disabled={p.compiling}
           title="Compile (Ctrl+Enter)"
-          className="flex h-11 items-center gap-2 rounded-lg bg-cyan-400 px-6 text-lg font-bold text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:bg-cyan-300 disabled:cursor-wait disabled:opacity-70"
+          className="hidden h-11 items-center gap-2 rounded-lg bg-cyan-400 px-6 text-lg font-bold lg:flex text-slate-950 shadow-lg shadow-cyan-500/20 transition hover:bg-cyan-300 disabled:cursor-wait disabled:opacity-70"
         >
           {p.compiling ? <LoaderCircle className="size-5 animate-spin" /> : <Play className="size-5 fill-current" />}
           {p.compiling ? "Compiling…" : "Compile"}

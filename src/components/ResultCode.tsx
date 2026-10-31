@@ -13,7 +13,7 @@ export function CopyButton({ text, label, big }: { text: string; label: string; 
           setTimeout(() => setDone(false), 1600);
         }
       }}
-      className={`flex items-center gap-1.5 rounded-md font-semibold transition ${big ? "h-10 px-3 text-base" : "h-9 px-3 text-sm"} ${
+      className={`flex items-center justify-center gap-1.5 rounded-md font-semibold transition ${big ? "h-12 px-3 text-base sm:h-10" : "h-9 px-3 text-sm"} ${
         done ? "bg-emerald-500 text-slate-950" : "bg-slate-800 text-slate-100 hover:bg-slate-700"
       }`}
     >
@@ -27,10 +27,10 @@ export default function ResultCode({ filename, code }: { filename: string; code:
   const lines = code.split("\n");
   return (
     <div className="flex h-full min-h-0 flex-col gap-2">
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         <span className="font-mono text-base font-semibold text-slate-300">{filename}</span>
         <span className="text-sm text-slate-500">{lines.length} lines</span>
-        <span className="ml-auto flex gap-2">
+        <span className="flex w-full gap-2 sm:ml-auto sm:w-auto">
           <CopyButton text={code} label={`Copy ${filename}`} />
           <button
             type="button"
@@ -41,7 +41,7 @@ export default function ResultCode({ filename, code }: { filename: string; code:
           </button>
         </span>
       </div>
-      <pre className="min-h-0 flex-1 overflow-auto rounded-xl border border-slate-800 bg-slate-950 py-3 font-mono text-[0.95rem] leading-relaxed">
+      <pre className="max-h-[60dvh] min-h-0 flex-1 overflow-auto rounded-xl border border-slate-800 bg-slate-950 py-3 font-mono text-xs leading-relaxed sm:text-sm lg:max-h-none lg:text-[0.95rem]">
         <code className="grid grid-cols-[auto_1fr]">
           {lines.map((l, i) => (
             <span key={i} className="contents">

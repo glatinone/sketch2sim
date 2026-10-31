@@ -6,6 +6,8 @@ import { compile, DEFAULT_MODEL_ID, loadCachedResult, USE_MOCK } from "./compile
 import { CompileError, type Board, type CompileErrorKind } from "./contract/types.ts";
 import { loadApiKey, loadModelOverride, saveApiKey, saveModelOverride } from "./ui/settings.ts";
 import { MOCK_RESULT } from "./ui/mockCompile.ts";
+import { useIsMobile } from "./ui/media.ts";
+import { LoaderCircle, Play } from "lucide-react";
 
 function describe(e: unknown): { kind: CompileErrorKind; message: string; raw?: string } {
   if (e instanceof CompileError) return { kind: e.kind, message: e.message, raw: e.raw };
@@ -33,7 +35,14 @@ export default function App() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [state, setState] = useState<RunState>(devInitialState);
   const inputRef = useRef<ImageInputHandle>(null);
+  const resultRef = useRef<HTMLDivElement>(null);
   const runId = useRef(0);
+  const isMobile = useIsMobile();
+
+  // On phones the result sits below the input: bring it into view when a run starts and when it ends.
+  useEffect(() => {
+    if (isMobile && state.status !== "idle") resultRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [isMobile, state.status]);
 
   const onApiKey = (v: string) => {
     setApiKey(v);
@@ -103,7 +112,7 @@ export default function App() {
   }, [run]);
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-slate-950 text-slate-100">
+    <div className="flex min-h-dvh flex-col bg-slate-950 text-slate-100 lg:h-dvh lg:overflow-hidden">
       <TopBar
         board={board}
         apiKey={apiKey}
@@ -117,14 +126,30 @@ export default function App() {
         settingsOpen={settingsOpen}
         onSettingsOpen={setSettingsOpen}
       />
-      <main className="grid min-h-0 flex-1 grid-cols-[2fr_3fr] gap-5 p-4">
-        <div className="min-h-0 min-w-0">
+      <main className="flex flex-1 flex-col gap-4 p-3 pb-28 lg:grid lg:min-h-0 lg:grid-cols-[2fr_3fr] lg:gap-5 lg:p-4">
+        <div className="h-[62dvh] min-h-[22rem] min-w-0 lg:h-auto lg:min-h-0">
           <ImageInput ref={inputRef} />
         </div>
-        <div className="min-h-0 min-w-0 rounded-2xl border border-slate-800 bg-slate-900/40 p-4">
+        <div
+          ref={resultRef}
+          className="min-w-0 scroll-mt-16 rounded-2xl border border-slate-800 bg-slate-900/40 p-3 lg:min-h-0 lg:p-4"
+        >
           <ResultPanel state={state} onOpenSettings={() => setSettingsOpen(true)} />
         </div>
       </main>
+
+      {/* Phones: one big thumb-reachable Compile button, always visible */}
+      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-slate-800 bg-slate-950/95 px-3 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] backdrop-blur lg:hidden">
+        <button
+          type="button"
+          onClick={() => void run()}
+          disabled={state.status === "compiling"}
+          className="flex h-14 w-full items-center justify-center gap-2 rounded-xl bg-cyan-400 text-lg font-bold text-slate-950 shadow-lg shadow-cyan-500/20 active:bg-cyan-300 disabled:opacity-70"
+        >
+          {state.status === "compiling" ? <LoaderCircle className="size-5 animate-spin" /> : <Play className="size-5 fill-current" />}
+          {state.status === "compiling" ? "Gemma 4 is reading your sketch…" : state.status === "result" ? "Compile again" : "Compile sketch"}
+        </button>
+      </div>
     </div>
   );
 }

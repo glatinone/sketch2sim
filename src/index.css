@@ -21,6 +21,7 @@ html {
 
 body {
   background: #020617;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .s2s-scan {

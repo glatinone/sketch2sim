@@ -29,7 +29,7 @@ export default function ResultNotes({ notes }: { notes: string[] }) {
               >
                 {on && <Check className="size-4" strokeWidth={3} />}
               </span>
-              <span className={`text-lg ${on ? "text-slate-500 line-through" : "text-slate-200"}`}>{n}</span>
+              <span className={`text-base lg:text-lg ${on ? "text-slate-500 line-through" : "text-slate-200"}`}>{n}</span>
             </button>
           </li>
         );

@@ -1,5 +1,6 @@
 import { useEffect, useImperativeHandle, useRef, useState, type Ref } from "react";
-import { Camera, Images, PenLine, RefreshCw, Upload } from "lucide-react";
+import { Camera, ImagePlus, Images, PenLine, RefreshCw, Upload } from "lucide-react";
+import { useCoarsePointer, useIsMobile } from "../ui/media.ts";
 import SketchCanvas, { type SketchCanvasHandle } from "./SketchCanvas.tsx";
 import { fileToImage, sourceToImage, urlToImage, type InputImage } from "../ui/image.ts";
 import { PRESET_IDS } from "../compileClient.ts";
@@ -26,8 +27,13 @@ const TABS: { id: InputTab; label: string; icon: typeof PenLine }[] = [
   { id: "presets", label: "Presets", icon: Images },
 ];
 
+// Phones lead with the camera (point at the paper, snap, compile); desktops lead with drawing.
+const MOBILE_ORDER: InputTab[] = ["camera", "upload", "draw", "presets"];
+
 export default function ImageInput({ ref }: { ref?: Ref<ImageInputHandle> }) {
-  const [tab, setTab] = useState<InputTab>("draw");
+  const isMobile = useIsMobile();
+  const [tab, setTab] = useState<InputTab>(() => (window.matchMedia("(max-width: 1023px)").matches ? "camera" : "draw"));
+  const tabs = isMobile ? MOBILE_ORDER.map((id) => TABS.find((t) => t.id === id)!) : TABS;
   const canvasRef = useRef<SketchCanvasHandle>(null);
   const [upload, setUpload] = useState<InputImage | null>(null);
   const [snap, setSnap] = useState<InputImage | null>(null);
@@ -44,13 +50,13 @@ export default function ImageInput({ ref }: { ref?: Ref<ImageInputHandle> }) {
 
   return (
     <section className="flex h-full min-h-0 flex-col gap-3">
-      <nav className="flex gap-1 rounded-lg bg-slate-900 p-1">
-        {TABS.map(({ id, label, icon: Icon }) => (
+      <nav className="flex shrink-0 gap-1 rounded-lg bg-slate-900 p-1">
+        {tabs.map(({ id, label, icon: Icon }) => (
           <button
             key={id}
             type="button"
             onClick={() => setTab(id)}
-            className={`flex flex-1 items-center justify-center gap-2 rounded-md py-2 text-base font-semibold transition ${
+            className={`flex min-w-0 flex-1 items-center justify-center gap-1.5 rounded-md py-2.5 text-sm font-semibold transition sm:gap-2 lg:py-2 lg:text-base ${
               tab === id ? "bg-slate-700 text-white" : "text-slate-400 hover:text-slate-200"
             }`}
           >
@@ -130,8 +136,14 @@ function UploadPane({ image, onImage }: { image: InputImage | null; onImage(i: I
           }`}
         >
           <Upload className="size-10" />
-          <span className="text-lg font-semibold">Drop a photo of your paper sketch</span>
-          <span className="text-sm">or click to choose · PNG / JPEG · auto-resized to 1280px</span>
+          <span className="px-4 text-center text-lg font-semibold">
+            <span className="lg:hidden">Choose a photo of your paper sketch</span>
+            <span className="hidden lg:inline">Drop a photo of your paper sketch</span>
+          </span>
+          <span className="px-4 text-center text-sm">
+            <span className="lg:hidden">From your gallery · PNG / JPEG</span>
+            <span className="hidden lg:inline">or click to choose · PNG / JPEG · auto-resized to 1280px</span>
+          </span>
         </button>
       )}
       {err && <p className="mt-2 text-sm text-rose-400">{err}</p>}
@@ -139,7 +151,90 @@ function UploadPane({ image, onImage }: { image: InputImage | null; onImage(i: I
   );
 }
 
-function CameraPane({ image, onImage }: { image: InputImage | null; onImage(i: InputImage | null): void }) {
+function CameraPane(props: { image: InputImage | null; onImage(i: InputImage | null): void }) {
+  return useCoarsePointer() ? <NativeCameraPane {...props} /> : <LiveCameraPane {...props} />;
+}
+
+// Phones: hand off to the native camera app (sharper photo, autofocus, no getUserMedia permission quirks).
+function NativeCameraPane({ image, onImage }: { image: InputImage | null; onImage(i: InputImage | null): void }) {
+  const cameraRef = useRef<HTMLInputElement>(null);
+  const galleryRef = useRef<HTMLInputElement>(null);
+  const [err, setErr] = useState("");
+  const [busy, setBusy] = useState(false);
+  const take = async (file?: File) => {
+    if (!file) return;
+    setErr("");
+    setBusy(true);
+    try {
+      onImage(await fileToImage(file));
+    } catch (e) {
+      setErr((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  };
+  const inputs = (
+    <>
+      <input ref={cameraRef} type="file" accept="image/*" capture="environment" hidden onChange={(e) => void take(e.target.files?.[0])} />
+      <input ref={galleryRef} type="file" accept="image/*" hidden onChange={(e) => void take(e.target.files?.[0])} />
+    </>
+  );
+
+  if (image)
+    return (
+      <div className="flex h-full min-h-0 flex-col gap-2">
+        {inputs}
+        <div className="min-h-0 flex-1">
+          <Preview image={image} />
+        </div>
+        <div className="grid shrink-0 grid-cols-2 gap-2">
+          <button
+            type="button"
+            onClick={() => cameraRef.current?.click()}
+            className="flex h-12 items-center justify-center gap-2 rounded-lg bg-slate-800 font-semibold text-slate-100 active:bg-slate-700"
+          >
+            <RefreshCw className="size-4" /> Retake
+          </button>
+          <button
+            type="button"
+            onClick={() => galleryRef.current?.click()}
+            className="flex h-12 items-center justify-center gap-2 rounded-lg bg-slate-800 font-semibold text-slate-100 active:bg-slate-700"
+          >
+            <ImagePlus className="size-4" /> Gallery
+          </button>
+        </div>
+        <p className="shrink-0 text-center text-sm text-emerald-300">Photo ready. Tap Compile below.</p>
+      </div>
+    );
+
+  return (
+    <div className="flex h-full min-h-0 flex-col gap-3">
+      {inputs}
+      <button
+        type="button"
+        onClick={() => cameraRef.current?.click()}
+        disabled={busy}
+        className="flex min-h-0 flex-1 flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed border-cyan-500/50 bg-cyan-400/5 px-6 text-cyan-100 active:bg-cyan-400/10"
+      >
+        <span className="grid size-20 place-items-center rounded-full bg-cyan-400 text-slate-950 shadow-lg shadow-cyan-500/30">
+          <Camera className="size-9" />
+        </span>
+        <span className="text-xl font-bold">{busy ? "Loading photo…" : "Take a photo of your sketch"}</span>
+        <span className="text-center text-sm text-slate-400">Paper flat, good light, the whole drawing in frame.</span>
+      </button>
+      <button
+        type="button"
+        onClick={() => galleryRef.current?.click()}
+        className="flex h-12 shrink-0 items-center justify-center gap-2 rounded-lg bg-slate-800 font-semibold text-slate-100 active:bg-slate-700"
+      >
+        <ImagePlus className="size-4" /> Pick from gallery
+      </button>
+      {err && <p className="shrink-0 text-sm text-rose-400">{err}</p>}
+    </div>
+  );
+}
+
+function LiveCameraPane({ image, onImage }: { image: InputImage | null; onImage(i: InputImage | null): void }) {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [err, setErr] = useState("");
   const live = !image;
@@ -220,9 +315,9 @@ function PresetsPane({ image, onImage }: { image: InputImage | null; onImage(i: 
               }`}
             >
               <img src={presetUrl(id)} alt={info.title} className="aspect-[3/2] w-full bg-white object-contain" />
-              <div className="px-2 py-1.5">
-                <div className="text-sm font-bold text-white">{info.title}</div>
-                <div className="truncate text-xs text-slate-400">{info.blurb}</div>
+              <div className="px-1.5 py-1 lg:px-2 lg:py-1.5">
+                <div className="truncate text-xs font-bold text-white sm:text-sm">{info.title}</div>
+                <div className="hidden truncate text-xs text-slate-400 sm:block">{info.blurb}</div>
               </div>
             </button>
           );
@@ -233,7 +328,7 @@ function PresetsPane({ image, onImage }: { image: InputImage | null; onImage(i: 
         {image ? (
           <Preview image={image} />
         ) : (
-          <div className="grid h-full place-items-center rounded-xl border border-dashed border-slate-700 text-slate-500">
+          <div className="grid h-full place-items-center rounded-xl border border-dashed border-slate-700 px-4 text-center text-sm text-slate-500 lg:text-base">
             Pick a preset — Compile runs it live; offline it falls back to a labeled cached result.
           </div>
         )}
