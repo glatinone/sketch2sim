@@ -4,7 +4,7 @@
   "private": true,
   "description": "Sketch2Sim demo video (Remotion)",
   "dependencies": {
-    "@remotion/cli": "4.0.532",
+    "@remotion/cli": "4.0.541",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "remotion": "4.0.532"
